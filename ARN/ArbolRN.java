@@ -36,8 +36,10 @@ public class ArbolRN<T extends Comparable<? super T>> {
 			if(raiz.dato.compareTo(dato) == 1){
 				if(raiz.izq == null)
 				{
-					raiz.setearPadre(this);
-					raiz.setearIzq(new ArbolRN(dato, ROJO));
+					ArbolRN<T> ar_temp = new ArbolRN(dato, ROJO);
+					ar_temp.raiz.setearPadre(this);
+					raiz.setearIzq(ar_temp);
+					ar_temp = null;
 				}else
 				{
 					raiz.izq.insertarABB(dato);
@@ -45,8 +47,10 @@ public class ArbolRN<T extends Comparable<? super T>> {
 			}else if(raiz.dato.compareTo(dato) == -1){
 				if(raiz.der == null)
 				{
-					raiz.setearPadre(this);
-					raiz.setearDer(new ArbolRN(dato, ROJO));
+					ArbolRN<T> ar_temp = new ArbolRN(dato, ROJO);
+					ar_temp.raiz.setearPadre(this);
+					raiz.setearDer(ar_temp);
+					ar_temp = null;
 				}else
 				{
 					raiz.der.insertarABB(dato);
@@ -72,6 +76,7 @@ public class ArbolRN<T extends Comparable<? super T>> {
 		return res;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
 		ArbolRN<Integer> arbol = new ArbolRN<Integer>();
 		arbol.insertarABB(20);
@@ -84,7 +89,7 @@ public class ArbolRN<T extends Comparable<? super T>> {
 		System.out.println(arbol.toString());
 		ArbolRN<Integer>arbol2 = arbol.raiz.izq.raiz.izq;
 		System.out.println(arbol2.toString());
-		//System.out.println(arbol2.raiz.padre.toString());
+		System.out.println(arbol2.raiz.padre.toString());
 	}
 
 }
