@@ -1,0 +1,1333 @@
+From: <Saved by Windows Internet Explorer 7>
+Subject: CSC378: Interval Trees
+Date: Sun, 22 Apr 2007 06:11:27 -0300
+MIME-Version: 1.0
+Content-Type: multipart/related;
+	type="text/html";
+	boundary="----=_NextPart_000_0000_01C784A5.10285F20"
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.3028
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_0000_01C784A5.10285F20
+Content-Type: text/html;
+	charset="Windows-1252"
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://www.dgp.toronto.edu/people/JamesStewart/378notes/22intervals/
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>CSC378: Interval Trees</TITLE>
+<META http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Dwindows-1252"><LINK=20
+href=3D"http://www.dgp.toronto.edu/people/JamesStewart/378notes/style.css=
+"=20
+rel=3Dstylesheet>
+<META content=3D"MSHTML 6.00.6000.16414" name=3DGENERATOR></HEAD>
+<BODY>
+<P class=3Dtitle1>CSC 378: Data Structures and Algorithm Analysis</P>
+<P class=3Dtitle2>INTERVAL =
+TREES</P><BR><BR><!------------------------------------------------------=
+---------->
+<H1>Elementary Intervals</H1>
+<DIV>
+<P>An <EM>interval</EM> is a pair of integers [<I>a</I>,<I>b</I>] such =
+that=20
+<I>a</I> &lt; <I>b</I>.=20
+<P>The endpoints <I>a</I> and <I>b</I> of each interval =
+[<I>a</I>,<I>b</I>]=20
+divide the integer line into partitions called <EM>elementary =
+intervals</EM>.=20
+<P>The interval <EM>x=3D[10, 20]</EM> has been added to the integer =
+line. Notice=20
+that one interval cuts the line at two points:=20
+<P><IMG class=3Dexample=20
+src=3D"http://www.dgp.toronto.edu/people/JamesStewart/378notes/22interval=
+s/interval1.gif">=20
+
+<P>See what happens as we add new intervals. Notice how many new =
+elementary=20
+intervals we are creating.=20
+<P><BR><BR>Add <EM>y =3D [15, 25]:</EM>=20
+<P><IMG class=3Dexample=20
+src=3D"http://www.dgp.toronto.edu/people/JamesStewart/378notes/22interval=
+s/interval2.gif">=20
+
+<P><BR><BR>Add <EM>z =3D [18, 22]:</EM>=20
+<P><IMG class=3Dexample=20
+src=3D"http://www.dgp.toronto.edu/people/JamesStewart/378notes/22interval=
+s/interval3.gif">=20
+
+<P>Given <I>n</I> intervals [<I>a</I><SUB><I>i</I></SUB>,=20
+<I>b</I><SUB><I>i</I></SUB>], for <I>i =3D 1 ... n</I>, <EM>exactly</EM> =
+how many=20
+<EM>elementary</EM> intervals are there, assuming that no intervals=20
+[<I>a</I><SUB><I>i</I></SUB>,<I>b</I><SUB><I>i</I></SUB>] share =
+endpoints?=20
+<P>We get <EM>2n + 1</EM> sub-intervals when there are <EM>n</EM> =
+intervals on=20
+the integer line that do not share endpoints.=20
+<P>Every interval can be expressed as an aggregate of the sub-intervals =
+that it=20
+spans:=20
+<P>
+<CENTER>
+<TABLE cellPadding=3D4 border=3D1>
+  <TBODY>
+  <TR>
+    <TD align=3Dmiddle></TD>
+    <TD align=3Dleft>Interval</TD>
+    <TD align=3Dleft>spans Sub-Intervals</TD></TR>
+  <TR>
+    <TD align=3Dmiddle>x</TD>
+    <TD align=3Dleft>[10,20]</TD>
+    <TD align=3Dleft>[10,15], [15,18], [18-20]</TD></TR>
+  <TR>
+    <TD align=3Dmiddle>y</TD>
+    <TD align=3Dleft>[15,25]</TD>
+    <TD align=3Dleft>[15,18], [18,20], [20-22], [22,25]</TD></TR>
+  <TR>
+    <TD align=3Dmiddle>z</TD>
+    <TD align=3Dleft>[18, 22]</TD>
+    <TD align=3Dleft>[18,20], =
+[20,22]</TD></TR></TBODY></TABLE></CENTER></DIV><!-----------------------=
+----------------------------------------->
+<H1>Interval Trees</H1>
+<DIV>
+<P><B>How would we store these intervals in a data structure?</B>=20
+<P>We would store them in an interval tree. This is an augmentation of =
+the BST=20
+data structure.=20
+<P>An interval tree has a leaf node for every elementary interval. On =
+top of=20
+these leaves is built a complete binary tree. Each internal node of the =
+tree=20
+stores, as its key, the integer that separates the elementary intervals =
+in its=20
+left and right subrees. The leaf nodes do not store any keys, and =
+represent the=20
+elementary intervals. In the interval tree below, the key is shown in =
+the top of=20
+each node.=20
+<P><IMG class=3Dexample=20
+src=3D"http://www.dgp.toronto.edu/people/JamesStewart/378notes/22interval=
+s/tree0a.gif">=20
+
+<P>Note that each leaf corresponds to exactly one elementary intervals. =
+<!---------------------------------------------------------------->
+<H2>Insertion of Intervals</H2>
+<DIV>
+<P><B>How would we store the actual (non-elementary) intervals in this =
+tree?</B>=20
+
+<P>Each node of the tree (both internal nodes and leaf nodes) can store =
+a=20
+<EM>set of intervals</EM>. In the tree above, this set is shown in the =
+bottom of=20
+each node.=20
+<P>We could store these sets as linked lists. Each leaf (which =
+corresponds to an=20
+elementary interval) would contain a pointer to a list of non-elementary =
+
+intervals that span the leaf's elementary interval. For example:=20
+<P><IMG class=3Dexample=20
+src=3D"http://www.dgp.toronto.edu/people/JamesStewart/378notes/22interval=
+s/tree1.gif">=20
+
+<P><B>What's wrong with this picture?!</B>=20
+<P>It uses up too much space: If each interval were very long, it could=20
+potentially be stored in every leaf. Since there are <EM>n</EM> leaves, =
+we are=20
+looking at <EM>O(n<SUP>2</SUP>)</EM> storage!=20
+<P><B>So how do we improve the storage overhead?</B>=20
+<P>An internal node is said to <EM>``span''</EM> the union of the =
+elementary=20
+intervals in its subtree. For example, node 18 spans the interval from =
+15 to 20:=20
+In other words: span(18) =3D <EM>[15,20]</EM>.=20
+<P>Suppose that, rather than store an interval in each individual leaf, =
+we will=20
+store it in the internal nodes. Here is the rule:=20
+<BLOCKQUOTE>
+  <P>An interval <EM>[a,b]</EM> is stored in a node <I>x</I> if and only =
+if=20
+  <P>
+  <DL compact>
+    <DT>1)=20
+    <DD><TT>span(</TT><I>x</I><TT>)</TT> is completely contained within=20
+    <EM>[a,b]</EM> and=20
+    <DT>2)=20
+    <DD><TT>span(parent(</TT><I>x</I><TT>))</TT> is <EM>not</EM> =
+completely=20
+    contained in <EM>[a,b]</EM>. </DD></DL></BLOCKQUOTE>
+<P>Let's incorporate this rule into our tree:=20
+<P><IMG class=3Dexample=20
+src=3D"http://www.dgp.toronto.edu/people/JamesStewart/378notes/22interval=
+s/tree2.gif">=20
+
+<P>Each interval can be stored at most twice at each level. (Can you =
+prove=20
+this?)=20
+<P>This gives us <EM>O(n log n)</EM> storage - actually <EM>2 n log =
+n</EM>,=20
+which has a very low coefficient.=20
+<P>MUCH BETTER! =
+<!---------------------------------------------------------------->
+<H3>A More Complex Example</H3>
+<DIV>
+<P>Suppose we have a set of composers and their lifespans; each lifespan =
+is an=20
+interval of years between the composer's birth and death. The following =
+table=20
+gives an example.=20
+<P>
+<CENTER>
+<TABLE cellPadding=3D4 border=3D1>
+  <TBODY>
+  <TR>
+    <TD align=3Dmiddle>Interval</TD>
+    <TD align=3Dleft>Composer</TD>
+    <TD align=3Dleft>Birth</TD>
+    <TD align=3Dleft>Death</TD></TR>
+  <TR>
+    <TD align=3Dmiddle>A</TD>
+    <TD align=3Dleft>Stravinsky</TD>
+    <TD align=3Dleft>1888</TD>
+    <TD align=3Dleft>1971</TD></TR>
+  <TR>
+    <TD align=3Dmiddle>B</TD>
+    <TD align=3Dleft>Schoenberg</TD>
+    <TD align=3Dleft>1874</TD>
+    <TD align=3Dleft>1951</TD></TR>
+  <TR>
+    <TD align=3Dmiddle>C</TD>
+    <TD align=3Dleft>Grieg</TD>
+    <TD align=3Dleft>1843</TD>
+    <TD align=3Dleft>1907</TD></TR>
+  <TR>
+    <TD align=3Dmiddle>D</TD>
+    <TD align=3Dleft>Schubert</TD>
+    <TD align=3Dleft>1779</TD>
+    <TD align=3Dleft>1828</TD></TR>
+  <TR>
+    <TD align=3Dmiddle>E</TD>
+    <TD align=3Dleft>Mozart</TD>
+    <TD align=3Dleft>1756</TD>
+    <TD align=3Dleft>1791</TD></TR>
+  <TR>
+    <TD align=3Dmiddle>F</TD>
+    <TD align=3Dleft>Schuetz</TD>
+    <TD align=3Dleft>1585</TD>
+    <TD align=3Dleft>1672</TD></TR></TBODY></TABLE></CENTER>
+<P>The intervals are shown on the integer line. Each interval is =
+labelled with a=20
+letter corresponding to one of the composers in the table:=20
+<P><IMG class=3Dexample=20
+src=3D"http://www.dgp.toronto.edu/people/JamesStewart/378notes/22interval=
+s/int.gif">=20
+
+<P>Notice that the endpoints <I>a</I> and <I>b</I> of each interval=20
+[<I>a</I>,<I>b</I>] divide the integer line into <EM>elementary =
+intervals</EM>.=20
+The elementary intervals for the composers are:=20
+<P>
+<CENTER>[-infty,1585], [1585,1672], [1672,1756], [1756,1779], ..., =
+[1907,1951],=20
+[1951,1971], [1971,+infty]. </CENTER>
+<P>Here is the Interval Tree for our composers:=20
+<P><IMG class=3Dexample=20
+src=3D"http://www.dgp.toronto.edu/people/JamesStewart/378notes/22interval=
+s/emptytree.gif">=20
+
+<P>Notice that node 1828 spans the four elementary intervals between =
+1779 and=20
+1874. In this case, we say <TT>span(1828)</TT> =3D <I>[1779,1874]</I>. A =
+leaf node=20
+spans only one elementary interval.=20
+<P>And here's the tree with the intervals stored in each node according =
+to the=20
+rule above:=20
+<P><IMG class=3Dexample=20
+src=3D"http://www.dgp.toronto.edu/people/JamesStewart/378notes/22interval=
+s/treea.gif">=20
+
+<P>For example, the interval <EM>C =3D [1843,1907]</EM> corresponds to =
+Grieg's=20
+lifetime. This interval is stored in node <TT>1888</TT> because=20
+<P>
+<BLOCKQUOTE>
+  <DL compact>
+    <DT>1)=20
+    <DD><TT>span(1888)</TT> =3D <EM>[1874,1907]</EM> is completely =
+contained=20
+    within <EM>[1843,1907]</EM> and=20
+    <DT>2)=20
+    <DD><TT>span(parent(1888))</TT> =3D <EM>[1874,1951]</EM> is =
+<EM>not</EM>=20
+    completely contained within <EM>[1843,1907]</EM>. =
+</DD></DL></BLOCKQUOTE>
+<P>The interval <I>C</I> is also stored in the leaf node to the right of =
+1843=20
+because this node also satisfies conditions (1) and (2).=20
+<P><B>Test your understanding:</B>=20
+<P>Suppose interval <EM>G =3D [1672,1779]</EM>. Which nodes in the tree =
+above=20
+would contain a <EM>G</EM>? <EM>Hint:</EM> Start by adding <I>G</I> to =
+each=20
+elementary node spanned by [1672,1779]. This satisfies condition (1) =
+above.=20
+However, if <I>G</I> is in <EM>both children</EM> of a node <I>x</I>, =
+then=20
+condition (2) is not satisfied by the children because the span of their =
+parent,=20
+<TT>span(</TT><I>x</I><TT>)</TT>, contains <I>G</I>. Whenever this =
+occurs,=20
+remove <I>G</I> from each child and add it to the parent, <I>x</I>. =
+Repeat this=20
+until <I>G</I> cannot be moved upward anywhere in the tree.=20
+<P><B>Try another:</B> In the tree above, write an <I>H</I> in each node =
+that=20
+stores the interval [1756,1971].=20
+<P><B>Storage cost:</B> Each interval can be stored in many nodes of the =
+tree.=20
+However, the conditions (1) and (2) ensure that any particular interval =
+is=20
+stored in at most two nodes on each level of the tree.=20
+<P>Given this information and the fact that a tree of <I>n</I> intervals =
+has=20
+<EM>O(n)</EM> leaf nodes, what is an asymptotic upper bound on the space =
+
+required to store the <I>n</I> intervals inside the tree nodes? Assume =
+that an=20
+interval requires <EM>O(1)</EM> space for each node in which it is =
+stored.=20
+</P></DIV></DIV>
+<H2>Query of Intervals</H2>
+<DIV>
+<P>How do we answer queries of the form ``What composers were alive in=20
+such-and-such a year?'' For example, the composers alive during 1910 =
+were=20
+Stravinsky (A) and Schoenberg (B).=20
+<P>In the abstract, the query algorithm must do the following: Given an =
+integer=20
+<I>k</I> and an interval tree <I>T</I>, list all the intervals stored in =
+
+<I>T</I> that contain <I>k</I>. An interval [<I>a</I>,<I>b</I>] contains =
+
+<I>k</I> if <EM>a &lt;=3D k &lt;=3D b</EM>.=20
+<P>The query algorithm must simply enumerate the intervals stored in the =
+leaf=20
+that contains <EM>k</EM>. It must also enumerate the intervals stored in =
+
+internal nodes whose span includes <EM>k</EM>. These are the ancestors =
+of the=20
+leaf that contains <EM>k</EM>. So the query algorithm simply follows a=20
+root-to-leaf path to find the leaf corresponding to the elementary =
+interval=20
+containing <EM>k</EM>, and enumerates all the intervals stored in nodes =
+on that=20
+root-to-leaf path.=20
+<P>Each node stores the usual <TT>left</TT> and <TT>right</TT> pointers. =
+In=20
+addition, it stores <TT>separator</TT>, which is the value that =
+separates=20
+elementary intervals in its left and right subtrees. It also stores=20
+<TT>intervals</TT>, which is a pointer to a linked list of the =
+intervals.=20
+<P>
+<BLOCKQUOTE><PRE>/* listIntervals( k, x )
+ *
+ * List all the intervals that contain k in the subtree rooted at x.
+ *
+ * This is intitially called as listIntervals( k, root ).
+ */
+
+
+listIntervals( k, x )
+
+  while x !=3D NULL
+    output intervals(x)
+    if k &lt; separator(x)
+      x =3D left(x)
+    else
+      x =3D right(x)
+    endif
+  endwhile
+</PRE></BLOCKQUOTE></DIV><!----------------------------------------------=
+------------------>
+<H2>Inserting an Interval</H2>
+<DIV>
+<P>Here the problem is to add <EM>[a,b]</EM> to the tree, assuming that =
+the=20
+endpoints <I>a</I> and <I>b</I> are already in the tree; that is, =
+<I>a</I> and=20
+<I>b</I> already separate elementary intervals somewhere in the tree.=20
+<P>Essentially, we've got to descend from the root <EM>just until</EM> =
+we find a=20
+node <EM>x</EM> whose span is completely contained in <EM>[a,b]</EM>. =
+Then rule=20
+(1) is satisfied. At this point we store the interval in <EM>x</EM> and =
+stop.=20
+Note that rule (2) is satisfied at <EM>x</EM> because we <EM>didn't</EM> =
+stop at=20
+<EM>x</EM>'s parent (otherwise we wouldn't have reached <EM>x</EM>). =
+Also note=20
+that we're guaranteed to stop at a leaf.=20
+<P>But if we reach a node <EM>x</EM> whose span is not completely =
+contained in=20
+<EM>[a,b]</EM> we simply recurse into each subtree of <EM>x</EM> that =
+contains=20
+any part of <EM>[a,b]</EM>. We know that condition (1) is not satisfied =
+at=20
+<EM>x</EM>, but that it will be satisfied at some of <EM>x</EM>'s =
+descendants.=20
+<P>
+<BLOCKQUOTE><PRE>/* addInterval( I, a, b, min, max, x )
+ *
+ * The interval to insert is [a,b] and is named I.  We assume that the
+ * values a and b separate elementary intervals somewhere in the tree.
+ * [min,max] is the span of the current subtree rooted at node x.
+ *
+ * This is initially called as addInterval( I, a, b, -infinity, =
++infinity, root ).
+ */
+
+addInterval( I, a, b, min, max, x )
+
+  if a &lt;=3D min and max &lt;=3D b
+
+    /* span(x) is completely within [a,b], so store the interval and =
+stop */
+
+    store I in intervals(x)
+
+  else
+
+    /* span(x) contains some elementary intervals that aren't in [a,b].
+     * We must recurse until we find a subtree that is completely =
+contained=20
+     * in [a,b].  Note that we might recurse into both subtrees. */
+
+    if (a &lt; separator(x))
+      addInterval( I, a, b, min, separator(x), left(x) );
+    endif
+
+    if (separator(x) &lt; b)
+      addInterval( I, a, b, separator(x), max, left(x) );
+    endif
+
+  endif
+</PRE></BLOCKQUOTE>
+<P>How long do this algorithm take in a tree of <EM>n</EM> elementary =
+intervals?=20
+The reasoning to answer this is not obvious. </P></DIV></DIV><BR>
+<HR>
+<BR><B><I><A=20
+href=3D"http://www.dgp.toronto.edu/people/JamesStewart/378notes/">Back =
+to the=20
+lecture index</A></I></B> <BR><BR><I>Copyright 2001 &nbsp;&nbsp;&nbsp; =
+Faye=20
+Baron and James Stewart</I> </BODY></HTML>
+
+------=_NextPart_000_0000_01C784A5.10285F20
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.dgp.toronto.edu/people/JamesStewart/378notes/22intervals/interval1.gif
+
+R0lGODlhZQKmAPf/AAAAAAAAQAAAgAAA/wAgAAAgQAAggAAg/wBAAABAQABAgABA/wBgAABgQABg
+gABg/wCAAACAQACAgACA/wCgAACgQACggACg/wDAAADAQADAgADA/wD/AAD/QAD/gAD//yAAACAA
+QCAAgCAA/yAgACAgQCAggCAg/yBAACBAQCBAgCBA/yBgACBgQCBggCBg/yCAACCAQCCAgCCA/yCg
+ACCgQCCggCCg/yDAACDAQCDAgCDA/yD/ACD/QCD/gCD//0AAAEAAQEAAgEAA/0AgAEAgQEAggEAg
+/0BAAEBAQEBAgEBA/0BgAEBgQEBggEBg/0CAAECAQECAgECA/0CgAECgQECggECg/0DAAEDAQEDA
+gEDA/0D/AED/QED/gED//2AAAGAAQGAAgGAA/2AgAGAgQGAggGAg/2BAAGBAQGBAgGBA/2BgAGBg
+QGBggGBg/2CAAGCAQGCAgGCA/2CgAGCgQGCggGCg/2DAAGDAQGDAgGDA/2D/AGD/QGD/gGD//4AA
+AIAAQIAAgIAA/4AgAIAgQIAggIAg/4BAAIBAQIBAgIBA/4BgAIBgQIBggIBg/4CAAICAQICAgICA
+/4CgAICgQICggICg/4DAAIDAQIDAgIDA/4D/AID/QID/gID//6AAAKAAQKAAgKAA/6AgAKAgQKAg
+gKAg/6BAAKBAQKBAgKBA/6BgAKBgQKBggKBg/6CAAKCAQKCAgKCA/6CgAKCgQKCggKCg/6DAAKDA
+QKDAgKDA/6D/AKD/QKD/gKD//8AAAMAAQMAAgMAA/8AgAMAgQMAggMAg/8BAAMBAQMBAgMBA/8Bg
+AMBgQMBggMBg/8CAAMCAQMCAgMCA/8CgAMCgQMCggMCg/8DAAMDAQMDAgMDA/8D/AMD/QMD/gMD/
+//8AAP8AQP8AgP8A//8gAP8gQP8ggP8g//9AAP9AQP9AgP9A//9gAP9gQP9ggP9g//+AAP+AQP+A
+gP+A//+gAP+gQP+ggP+g///AAP/AQP/AgP/A////AP//QP//gP///yH5BAEAAP8ALAAAAABlAqYA
+QAj+AP8JHEiwoMGDCBMqXMiwocOHECNKnEixosWLGDNq3Mixo8ePIEOKHEmy5MMWLUyqXMmypUuD
+KF/KnEmzps2bH2PitJkyZUOfAoEKLQj031CjO2nqTMq0qVOXAJ6qXCq1qtWrCKli3cqVadSSAKKG
+/dpVINmyaNPOPKu2rduEYf+NfUu3rt27ePPq3fuUrF++gPGe/Ru4sOHDiBMrXsy48UG2gCE7fkxw
+rkTLcuNOZqh5s+e+FiWzFD2480TRnymiTg3R9OexmjE/XM16Ie3auHPr3s27t2+Esn/3vS28eNfg
+xjMSTx7RNfPn0CubXZ6aenXr0bNrH429bXe1yLf+ix/P2O/3ledVOifPvr17h+uxhn9Pv779+/jz
+69/Pv7///7MVxNaA5sklIGEGSodgggsa2BmCAyoo4EBiUTihhQBmqOGGHHboYUtafZhaiCKWWBWJ
+jh21kE89DaQiUUgFJeOIRZlo41Mo3rhYjjrWll5eP/ZoV5BCvkUkZ2LFd9WRRXrXJFpxzaddhWZh
++GRhVCZ45ZZcdunll2CGKSZJQX6VHmlWntkbhJxRpiWTeynpWZbYrWbmmmPmqeeefPYJHGyw+Xld
+oCbCWZ+Ugm6IaHSG+thooonKWV5ukkJqaVqLykdXpZd2mh2nZNr0qKekipipR6CWquqqrLbq6qv+
+sMbKVYTSSVghrXRWRmiDklGZa5W1aumgrpbZKeuxyCar7FsoNevss9BGK+201FZr7bXYZqvtttx2
+6+234Na47JY8jguiuOY2Wa5vSxXVLEzt6rQuYvOmW2K9iaGbFUEqosuiizN+hq+9Hg6cm74HIQwj
+jQSTq3DDJRkM8WgMT/ySxBZrRNyoZXGccZsfq/cRZne65XHIcKHcUMn6nayyQS6/bFxpMVtMcqoy
+H5pmzh2xXDPPQAct9NBEF2300UgnrTROREaJs0IPWnnZbr8KCzPUb67581Z/NYiR01vPGtppsSVJ
+G6CAXg2s1a3hufZttL6ttW5swoW2lGDTHdr+3Xz37fffgAcu+OCEF2744YgnrvjijDfu+OOQRy75
+5JRXbjnhS2eu+eacd67Y00+aearnqxLKJeikt1Rs2L6x/hvqqRsJe+zwuU77XbNXJ17ut49nu5+/
+9/4e70ZONrrwnR5vavDIR8p8Rc+rFn3z405vlfXUJ018Vcpn771I3ZsU/vfkS7U9hdiXr/767Lfv
+/vvwxy///F6mTeBctzoYqK9SDzudbFmyEP/etj/TLahq6KNf5+xXQPwBy2xRChavhDUYylSQgA6U
+2gUFuKvxKfCDIAyhCEe4lXCZ8IQoTKEKV8jCFlKLhJvBGOdkCMO60FBzN6yhW3K4NB7qMC3+PkyR
+i/rFL4Ad5WH5QuIP9RJEu7SIX84qIsACpq8nxkiJh2niEkuIxXzB611TpGIYw3hE1mhxi1c54w7H
+mBB3QXEozwpKu8zYRTTSRY1JdIgS8QjEOtpxh370HB89lz6XDDJoh9RcIS8WyM4lMmdnu5wkIYeS
+SVrykpjMpCYBV8lNevKToAxl42yju/UtMlmnBI0pyfcz0ZmMfakUkytVeT6ZxBJZtwTTLPOTS1n1
+8o/ADKYwh6mout2ua/0jppPkRj0EKnOZWUOeMZ8Jzcz8MnkdvCY1t8nNbnrzm+AMpzjHSc5ympND
+okynOtfJzna6853wjKc8+TY2p9CsnnT+m+bKBJhMR1HqQbVMzo/KNJ3TWHBnqnFbNFMGnIXmkzfO
+JCXWMgNRfCaUohe9kEObo9AD9k2jXvOn3ja6z4ZidKQZXYubSBqgiqIPbgdanTZfEtC6bLA7M23K
+QGmytZyWzqea2t05h0rUohr1qEhNqlKXylRL3a2p5KkpOgsEVfaYrktSnR89P4S2JmUVhl0tEVCx
+VNWxBsasQypoVVeGVpV9lalvXWBc1/qn9rTVK3Olq/Q+9am86jUkfv3pXf9qt8HyJ7CEtadhL7LY
+vSWWaglMTGNr99gp7WmyldVpkaiaWQAhFiRt/WxnnyPar82qtKN1D2pNttrUHra1w3GiLS5R+zvY
+ynZLtt1Ibm+bp5nulree2i1mgRumwP6WuA070nGRy9zmOve50I2udKdL3epa97rY1VoGXxpBBe3P
+uwAkVmw06r8qMRB/uyLvBrmbXa6S12oAhS+D+odAn01ogBu94AHz295CvTdC+cOVQwnDsn7yT58F
+Lm80STPc/h7nvxe6U9yitjbz0vegauVvhSl4X/U6+MMgDrGIR0zi9gYEADs=
+
+------=_NextPart_000_0000_01C784A5.10285F20
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.dgp.toronto.edu/people/JamesStewart/378notes/22intervals/interval2.gif
+
+R0lGODlhZQJkAPf/AAAAAAAAQAAAgAAA/wAgAAAgQAAggAAg/wBAAABAQABAgABA/wBgAABgQABg
+gABg/wCAAACAQACAgACA/wCgAACgQACggACg/wDAAADAQADAgADA/wD/AAD/QAD/gAD//yAAACAA
+QCAAgCAA/yAgACAgQCAggCAg/yBAACBAQCBAgCBA/yBgACBgQCBggCBg/yCAACCAQCCAgCCA/yCg
+ACCgQCCggCCg/yDAACDAQCDAgCDA/yD/ACD/QCD/gCD//0AAAEAAQEAAgEAA/0AgAEAgQEAggEAg
+/0BAAEBAQEBAgEBA/0BgAEBgQEBggEBg/0CAAECAQECAgECA/0CgAECgQECggECg/0DAAEDAQEDA
+gEDA/0D/AED/QED/gED//2AAAGAAQGAAgGAA/2AgAGAgQGAggGAg/2BAAGBAQGBAgGBA/2BgAGBg
+QGBggGBg/2CAAGCAQGCAgGCA/2CgAGCgQGCggGCg/2DAAGDAQGDAgGDA/2D/AGD/QGD/gGD//4AA
+AIAAQIAAgIAA/4AgAIAgQIAggIAg/4BAAIBAQIBAgIBA/4BgAIBgQIBggIBg/4CAAICAQICAgICA
+/4CgAICgQICggICg/4DAAIDAQIDAgIDA/4D/AID/QID/gID//6AAAKAAQKAAgKAA/6AgAKAgQKAg
+gKAg/6BAAKBAQKBAgKBA/6BgAKBgQKBggKBg/6CAAKCAQKCAgKCA/6CgAKCgQKCggKCg/6DAAKDA
+QKDAgKDA/6D/AKD/QKD/gKD//8AAAMAAQMAAgMAA/8AgAMAgQMAggMAg/8BAAMBAQMBAgMBA/8Bg
+AMBgQMBggMBg/8CAAMCAQMCAgMCA/8CgAMCgQMCggMCg/8DAAMDAQMDAgMDA/8D/AMD/QMD/gMD/
+//8AAP8AQP8AgP8A//8gAP8gQP8ggP8g//9AAP9AQP9AgP9A//9gAP9gQP9ggP9g//+AAP+AQP+A
+gP+A//+gAP+gQP+ggP+g///AAP/AQP/AgP/A////AP//QP//gP///yH5BAEAAP8ALAAAAABlAmQA
+QAj+AP8JHEiwoMGDCBMqXMiwocOHECNKnEixosWLGDNq3Mixo8ePIEOKHEmypMmTKC2GCZOypcuX
+MEeujEmzps2bOHNCnKmTJkuWBFcKDUrUINCiBYEe7emSJ9OnUKNKncrQKdWrWKlazcq1K8kWLbwy
+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
+
+------=_NextPart_000_0000_01C784A5.10285F20
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.dgp.toronto.edu/people/JamesStewart/378notes/22intervals/interval3.gif
+
+R0lGODlhZQLMAPf/AAAAAAAAQAAAgAAA/wAgAAAgQAAggAAg/wBAAABAQABAgABA/wBgAABgQABg
+gABg/wCAAACAQACAgACA/wCgAACgQACggACg/wDAAADAQADAgADA/wD/AAD/QAD/gAD//yAAACAA
+QCAAgCAA/yAgACAgQCAggCAg/yBAACBAQCBAgCBA/yBgACBgQCBggCBg/yCAACCAQCCAgCCA/yCg
+ACCgQCCggCCg/yDAACDAQCDAgCDA/yD/ACD/QCD/gCD//0AAAEAAQEAAgEAA/0AgAEAgQEAggEAg
+/0BAAEBAQEBAgEBA/0BgAEBgQEBggEBg/0CAAECAQECAgECA/0CgAECgQECggECg/0DAAEDAQEDA
+gEDA/0D/AED/QED/gED//2AAAGAAQGAAgGAA/2AgAGAgQGAggGAg/2BAAGBAQGBAgGBA/2BgAGBg
+QGBggGBg/2CAAGCAQGCAgGCA/2CgAGCgQGCggGCg/2DAAGDAQGDAgGDA/2D/AGD/QGD/gGD//4AA
+AIAAQIAAgIAA/4AgAIAgQIAggIAg/4BAAIBAQIBAgIBA/4BgAIBgQIBggIBg/4CAAICAQICAgICA
+/4CgAICgQICggICg/4DAAIDAQIDAgIDA/4D/AID/QID/gID//6AAAKAAQKAAgKAA/6AgAKAgQKAg
+gKAg/6BAAKBAQKBAgKBA/6BgAKBgQKBggKBg/6CAAKCAQKCAgKCA/6CgAKCgQKCggKCg/6DAAKDA
+QKDAgKDA/6D/AKD/QKD/gKD//8AAAMAAQMAAgMAA/8AgAMAgQMAggMAg/8BAAMBAQMBAgMBA/8Bg
+AMBgQMBggMBg/8CAAMCAQMCAgMCA/8CgAMCgQMCggMCg/8DAAMDAQMDAgMDA/8D/AMD/QMD/gMD/
+//8AAP8AQP8AgP8A//8gAP8gQP8ggP8g//9AAP9AQP9AgP9A//9gAP9gQP9ggP9g//+AAP+AQP+A
+gP+A//+gAP+gQP+ggP+g///AAP/AQP/AgP/A////AP//QP//gP///yH5BAEAAP8ALAAAAABlAswA
+QAj+AP8JHEiwoMGDCBMqXMiwocOHECNKnEixosWLGDNq3Mixo8ePIEOKHEmypMmTKFOqfBggwMqX
+C1vCnEmzps2bOHPq3AlRJkafDYH+8ylT6FCXA4UajbiUp9OnUKNKnUq1ZNOqHK9i3cq1q9evHcOE
+AZsUKdmMWreKPcu2rVuua8+mfSh2bMO4AuOu3TsW7z++ee1SnFvV79vDiBPPNOyVsGKDjqcyfkyZ
+a4MGlVFO5hpZ5OWanaNuzkwa6ufSHFuoLjh59UDXq12/bjH7H2zaH0ODPD1T99PRqFUCCI6QN/GP
+wKv69mj85XKeyY9XHC59enWQ1M9mn7kdZnew36/+ix9Pvrz58+i7Zl+f3iF7geGjvv8XHzvB+Si7
+13+6HX/7/wAGKOCABE60n3D3AXAgRAt+1J+CFD0I4UoNGiRhhQVJaOBBGkqk4HoT3mdhiB8aSGKI
+A2GY4okqrggiig+1eFGJ8NGo3YwU5jiVjDqOxGNEP2aIY0ZB0mdSke5xhaRIS0r1YZNkwVjZkzg9
+CaWHNtaUZXBUFlhal5Rt6dWVER7JHZk6genlmj6KqaSUVZaE5opywkmVmmzmKZ6bO9nJ5EZQ+mni
+nBzhqeehiJLEZ0qCMuhhmRESyuCiiVZq6ZeUatRokY3S1+mMmV4q6qikxhiqRacuZGiprLbq6qv+
+sMYqK2pWGplgicPlamStutrqK3y+1prir8D2Oh+vYOLXK7Gezurss9BGK+201Kb3HGLXVqvttl1l
+O5hZLSFVlFlHlTuuQNl6y+267DqlrkThBuVQvBW92+69lUY3lb1ykQuWvvgGfBPAUXmL18F1CfaX
+XQkHphBgBBF8EL80SSzwxStZ7K6/11G8mMIYJ9ZcviA3xrFKI6vkMUwah4xVyoi2hpttt9FMUGy0
+4SyQbB2tLBHMKPmccckuuwW0njLPrJDSS/Oc1ckpHW2S0Cq1nKik6pEaBtaM2sR1jG59zaWiNUZZ
+qthmaul12OVR9+mhy/pHYNxjBjssgnLnJ+T+VssW7fffgAcu+OCEA3hlrhV+d6ymPea9t4gWvsRj
+eAdSfjezDFkO7OYJxef25Zzv7Tjkj4duOtikK6R56qjrXXqSkb/tEdrYCWuelbIfRvt0u4+YKqO2
+S4d74S72flPufOdkPPK1G+/d78R7Df2dzg/p+p/5Mc/f9NEXuKp81XNoX6FYa/+8+d2n7yn6IXHf
+OqTWYeR++/Orb7+T9fMuY4Mtqpj/oOG7nwDH8700zamAA0ygAqsUwAU68IEQjKAEAYg4XFHpc7u6
+IOn807f+iM+DnONV6kA4LGEhcIIoTOG8wsXCFrrwhTCMoQxnSMMa1lCFONwW1baywxz6EED+PVQO
+1H5IxFbxyzFEKRe6rqIUcQ0xKE8sohQvpa4WQpEgQKHXuOJlRSV+a4pgNGIUURPEMJpxIQlLoxrX
+yMY2uvGNcKxLS+JIxzra8Y54TOMc88jHPtbxjMSzmk7KuK8xUkWQgNwWInFCyIghbCANc6RgGlYX
+izRyJItMJLUyaRN1QSwwlYSkwvTiMNYwrJSIvKRIOKnJaLGSJu8imCwdkkpDSoZorQzZK3tjy8yo
+MiS7zKVBLkPMYhrzmMhMpjKXycxmOvOZ0DymWKJJzWpak5gtuaY2lQmaXooGl8LMiNTYFEzneHM3
+mIHlOX8DznBeZJxrKudKfjnMdPKyLfL+dCc806MzUR4ENjazmdN2lrOCEhQk9CzIPkWSUI/kM5wL
+PU8/S1kQnslGNbjBGUYJOrOBaqShA4koQtfplIcKU6QCMulJQCoQlHqEpRtRaXoamBOXAkimViFp
+R2z6NHy2M0+Ja9vZ2kLT0/XoRqJCm9uKar2kEnVtansqeZb6LKayjS1MzepV3ck4FyHqQkq6FfBe
+JDkWYcVGJ+RqQxanp9VVha2uGx3ZWLejyKn1rnjNq173yte++vWvgA0sVKqnOLsZdUN6g6v4hCTX
+tIGtsUal22FVx9jL1adyhgVdZSeLOc3qJ36afd1mQZtY+PWpqaBqVubsmlnUOhayhQ3+oeQQ29rF
+Pg6yrN1gaEVLws+WDrav89yj6Nq53+52tSfp7XAzhLij0jYzVpUqUmmiVek6FTwTSitpgscl9tEv
+fNw9XgWFR6Porkm7ivEu/sxbNuAxkL2K+p8C5ftW9aYJqo4935ToG070qge+7+vaXIUDYFDZV7BA
+4q/06ppc7NWpwJM6MILPJGECs/drB8RwhY+k4Am/xb9aauABAUWoDTcPwh7+cIc7smKENOnFgTIx
+kVqc4qrSOFKzM+1ycSw9Gde4cCCeHacCDLsEl9XHPwZjkFH1tv1gqMlIZm6Uk+zhJZdVdeW7MZW3
+TOIpr/VwWuaymE8rvyBZecxoTrP+mtfM5jZDN7jMpZN+FLsr0GGQWM2Vrek86Ns675m4bg406/pc
+rDr7VrI1Kq9nP1hoPVtWRBe6s20FTelKW/rSmM60pjctWBt6+tOgDrWo6cXpUjMEpjdBtan5qupu
+rvrVCGm1OmFNayzq1JJZBNdSSK3FdN261myuIgttTWolDttcJ2viEnEN7FrbyyhdXHZZlr1rcuWa
+2c2GtbB7Ym0nItuL4A43U36dbTT/sjO29HW5Xy3re67b1O2GSbzffcZ5z5Pc9L6YH/fNbzXusd8A
+Dzge/y3wgtsx3+XBKUnsrTJ8D+ynCCeNwkfC8JRUHCITj3hJIV5I81ycLhzX+GP+Mh6SXyJskiWD
+mF9q6VORX4fkI8XIJx92Sr2E0iB8eWS9HG4TmLv84WzxZF84vnKQGYYxNsf2WXz+85owvWcOvzka
+R4lyhg09lDdnOVue3nSWhbxg5JY6Q8SOkJCTndst73pwuL6Rj0+N507/utq3LvenuD2naZ+7xOu+
+MY/DvWJ8D+w2B0/4whvemNM8vOKpmc3FX9PVdGczT9vD9o/+nSKTt3ze05x59FQeLZefSOd/EvqX
+fD6HozfP6S8C09QrnSyrV6HryZO02nDUIBu9Pc2Y1vbSR2T2X4z8moFPmonu3qIZzb3xa9NPj4K+
+JsSHl++rFnjARj8zuZ9N9gP+elCB8r5mNcvN9B9yfbQLX83lf4zxZXaz5Huf+++Hf09pkv4Vbh7N
+9V870Zz/T4fwn/Xj5xD5d2oBeBKxl0IDWBoHGHwzkYAKcXdjV32WgmIl4YCZsYAT0Xr2JG8FaBIY
+GCblYYGV8YHjBn0baE73dzWZgzss2IIu+IIwGIMyOIMueBk0eIM4mIM6uIM82IM++IMf0hJA6IM2
+OIQ8KIRGmIQ5KBZK2IRO+IShQoENRipSWGTcgV/TdSlVGCdUaF3egYVmo4XJNV5104VYBYaz5YXX
+ASFhFmF3s4WUZYZZ+IVRdYZTxVnitT5fAYcMNodpSF1bRUBkqHd+w4eEeIj+iEg+jwZUJMQ3dOZg
+iDaFftZZZGYrhpg+j+g9xZM1XpUjuNU+ouUk63OJxJOJczNpd7KIkviJOQZog4WKP9YhbSVWYdWJ
+HFZeXsYhF3RmFpZduZiIwBiMwjiMxFiMxniMyJiMyriMggiFzviM0BiN0jiN1FiN1niN2JiN2viM
+rvU8qtiNbfKN7tGIzvVlrriC4rhWI5KOqlJCi6ZbrChbHAQk7oiHrCVpO+Yjb6g74GgiqhWHt3Vc
++fhaAhlZm/iHjpJomDVp7uNWmeJktXVZtZVbcHaO7WiREnlmhDWKA1k2vxiKCclkbKg4LhiQ9miF
+q2hnJUlc4PVclrWSunX+kqEIVy94j+9okr9Sk4MGi+pIVzq5W5MjYCCpkMPDWC2JKgipkodzVFHI
+kB9JkVb4kC5Gi/SYW1IpZb4YW8WzVAsyZxa0Jf2zi1e5lYmmY0zSJdxTYEhCimZZKWwJleUYl2U4
+Kmu5jXZ5l3iZl3q5l3zZl375lziIXbyYGOFFKxD2lFuJmKbShuDDmAFCkop5X/9omBc2mAZmQPGI
+VY75KpYZJZHZi9HVmS4ZYuT1mdIimm/ylj3JhUJJmpSpmq6CmtRDmKxZJwsGXZs5X7lJXbBpkXIy
+hhQWJrv5Q7LpFKbZVUlZO0dGmMPZX835YJzYmso5Vip2nH5VnCEGh8v+c5bZQ1TPqWbfKWSi+JvT
+GV+eaZ2Yhp0EZpz66CC2+V/oWW7qyWG12YqFcpaGOJ/MyJH1RVMlxmLNQz3xuYz6yWKRiSZLaaAU
+WKD7qaAL2juBgpwztj0D2qBdppZisyR1qSnwxaAWOljh6WKSYmZMdpniVaEfapwhaotE0pHjqD/Z
+2Zsp2mP+qV7+449YEkAeOqMz9Z3mE1RG5oZjJaM8ihg7GmdEBped82QQuqJFOoGb2Skv9qLxhaJP
+CittKGOVE2VHeqWA06WjyaIX6qV6BaaLST5WSqYDZKZ6WGZpqqY5VJzexaZwWmt0Wqd4mqd6uqd8
+2qd++qezIkK3woZsRokrkKYmkfZn9VgsYjmSijZCPumkgDpUO5kgcrZZ86gsjlZodzaP+xg6kUiJ
+k9o9hIZnhmaqk6hclgiXxpJZhzZahuU5RDqqd1ipn9o3wUJnoWo5ICKOnvpnhDartDqsxFqsxnqs
+yJqsXxEQADs=
+
+------=_NextPart_000_0000_01C784A5.10285F20
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.dgp.toronto.edu/people/JamesStewart/378notes/22intervals/tree0a.gif
+
+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
+JWifS0vNdlWjTUXucNcoXbma8rfTDdFy1djc6IbXp9Mkb3Kpa1PrQne71z2vc2HrXu8qVZnjLWh9
+1Ste7uoWveXVrn8B2t7Vpte2+B2VSz2VWwQeGDIJ3tCCH9NgAcu3ugQOcDDvW+H3mpe+Ex6wLCn8
+YQ/ztMP9baeIf/ld/o4qxcqdby5BfJKQnjiZMEaxi58p4xKnc8YxvjGORVpjGvP4x0Eesap83OMi
+E3nIQAIyk5uM5CXrOMSNinJ3/7vP9WJZkdkt8MOsvFktA1jMGc6vhRlrKxYr+cpjhq+b2UtmL4MN
+zCQ98xjjLEw1P5nNZtPzlPNM/udE6jfLb8ZzIrpY1A3DudByJrSiDR0fP2t4y9jFMIf/HN9Bn27P
+grZzObtc5kU/2tM/ebBjIswzU4MK1AVUtUBQDelNSyNy+RkpWZ1l64rOGtcfzfW56NqLjPb6rYkl
+7bBhnS7NfdbSsWYPuoJ9bGbXybXGliiyH1Ls3rG62eh4nVlHTWlshxXcjZZtarkdalkfV9ukrvO6
+T7ttQJ972YyWdrel9255axre8y63vsdd7X23ew3Ew3e40Rxo5g6c2gD/d635hrz81TvTmN7vxAPu
+7YsLXBwRl/jBwyzpNqc73xj/OLpNhM2OmzzRIeeyxkuecX/Hm+DR9PilR95y/hO0rHtevDnKnV1z
+m1Mc4Sp/38tZ3u+Gg/znS7qz0VeecHH3XMIOf3rQqZ4GFs5vizJX+NSFbvGhx7zoWM9607nu9LAT
+/etgXzqfx052teczDxxs7IXTrmKcx/N+Cy/m3fHu5KNT2ewzD9gedc7Zwg/e1xvXhssPn/eTS5nx
+9p6zrlcc7SERnvLcejjmOY9I0Cs+0ptPc+nPKPprqzv1fj+95q3taMgjveKNjz2nkw542rPe55W2
+r9dzThYzA//bf7f9pOs3+rj3fvivfbzvmV9Z4xd/zbuXu/OfT320C1/kxxf19bm/fbr3He7SL//3
+wb/827M9/djXPdP1jvjs/l/d++affvjpf37013/uWnE1QNq+a/6nAwC4FgKYAwRICgY4gAZ3awp4
+Awi4Jw5oXLgnTBL4gPTWfs0XffjHbiQne0pnbvLHcB5ofxtogvrHb+PHgOkSdemAaNlGgtoHgsEn
+gjCogSgYghQYf+TXdSXIgjXogssVhFFndeo3hEAIgR9IfLyXgdPWgknogzB3g/sng93XgVOYfxio
+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
+
+------=_NextPart_000_0000_01C784A5.10285F20
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.dgp.toronto.edu/people/JamesStewart/378notes/22intervals/tree1.gif
+
+R0lGODlhsAJ6Aff/AAAAAAAAQAAAgAAA/wAgAAAgQAAggAAg/wBAAABAQABAgABA/wBgAABgQABg
+gABg/wCAAACAQACAgACA/wCgAACgQACggACg/wDAAADAQADAgADA/wD/AAD/QAD/gAD//yAAACAA
+QCAAgCAA/yAgACAgQCAggCAg/yBAACBAQCBAgCBA/yBgACBgQCBggCBg/yCAACCAQCCAgCCA/yCg
+ACCgQCCggCCg/yDAACDAQCDAgCDA/yD/ACD/QCD/gCD//0AAAEAAQEAAgEAA/0AgAEAgQEAggEAg
+/0BAAEBAQEBAgEBA/0BgAEBgQEBggEBg/0CAAECAQECAgECA/0CgAECgQECggECg/0DAAEDAQEDA
+gEDA/0D/AED/QED/gED//2AAAGAAQGAAgGAA/2AgAGAgQGAggGAg/2BAAGBAQGBAgGBA/2BgAGBg
+QGBggGBg/2CAAGCAQGCAgGCA/2CgAGCgQGCggGCg/2DAAGDAQGDAgGDA/2D/AGD/QGD/gGD//4AA
+AIAAQIAAgIAA/4AgAIAgQIAggIAg/4BAAIBAQIBAgIBA/4BgAIBgQIBggIBg/4CAAICAQICAgICA
+/4CgAICgQICggICg/4DAAIDAQIDAgIDA/4D/AID/QID/gID//6AAAKAAQKAAgKAA/6AgAKAgQKAg
+gKAg/6BAAKBAQKBAgKBA/6BgAKBgQKBggKBg/6CAAKCAQKCAgKCA/6CgAKCgQKCggKCg/6DAAKDA
+QKDAgKDA/6D/AKD/QKD/gKD//8AAAMAAQMAAgMAA/8AgAMAgQMAggMAg/8BAAMBAQMBAgMBA/8Bg
+AMBgQMBggMBg/8CAAMCAQMCAgMCA/8CgAMCgQMCggMCg/8DAAMDAQMDAgMDA/8D/AMD/QMD/gMD/
+//8AAP8AQP8AgP8A//8gAP8gQP8ggP8g//9AAP9AQP9AgP9A//9gAP9gQP9ggP9g//+AAP+AQP+A
+gP+A//+gAP+gQP+ggP+g///AAP/AQP/AgP/A////AP//QP//gP///yH5BAEAAP8ALAAAAACwAnoB
+QAj+AP8JHEiwoMGDCBMqXMiwocOHECNKnEixosWLGDNq3Mixo8ePIEOKHEmypMmTKFOqXMmyJYCK
+L18KlBmRZsubOHPq3Mmzp8+fQIN6tLmSqNCjSJMqXcq0qdOnE42mlAq1qtWrWLNq3ZoTgNeaOKkm
+9CqWq9mzaNOqXWuRLFuXX9/KnUu3rt2ocdmWNev2rt+/gAOH7CtY4d7CM/MiXsy4cU/CjjMejlxT
+MeXLmO1CzsxZs+XOoBdP5kh0dOiip4+aBrk6tWuIrWcejP2P9muRtm/jjjqbt+7fF3NrFA58I/Hi
+xsMiXw5bOfPnf48Hh04dofS21admV3kd5vbvuTf+S+z+fSH58uZhfnZ4Hn30oazdJ5c/n/Rw+pjb
+69SPv/9A/iYB6B9QAjJUYEMHcpZgZwtaR1KDA44EIXtBTRiYhYJhmB5KGkbYnFId+kZdiHotFSKJ
+EaJYmIoe8sRiVi+uRWKM48HoXFU0ishSjh/+xKONNcomJFhW/dhjjzTRZiSCQBL5n3dFgvgcWVRW
+aeWVWGZ55VVLsqfll2CGuR5TXSIo5ploitdUmQaxWeGNLc7Y4pM3uamWnfvB+RSeDtbJZZM7/skV
+n9ypRxyhBCFaUHhjPqTokFFSpOaRe8qYIXwfuYmnnZquiemnSD3qJFqijpXaghCWymFaqm6lYZr+
+sIqJXXCx1prlrG3ZqmuVuBq66669Svrrr8HiNayuxe55LLIU+gllsqs+Ky1qzroELaWFTqsjtZIC
+yq2Beo7abbXblqudtkFai6642Y57bYDvmhiuqeR+a2+7gdaL773nqusvYHI2+2+6654k3HG2UdXa
+wRitVtqiBEdsLr10xruhxRRjnDGO87K64seXhnzhnJWKTLK+d7Wq8cksM6ZyyzCj97K7AIM8ssny
+zRzzzjzzbJpbk3aVaKMe/xc0XTYdPWheSpPKNNFLJ9l0z1RXbfXVyOmsWpJDi0VYX1AriPWDY7vY
+38/snlr2bmuzrHVmMQlcW28bz203zG+3rff+3XvX1/ffgFfM8aJUJmr4kF5DLLhTeQfuuFyNnxb5
+45RTHXDlmGe+3cKF1xZ2n5qHLnpxl49u+umNiVd6YpOj7nrbUzvasbCtv2675J/7F/vtvOecu6WI
+7d778G8JH1ntuP1O/PISKg8d8gQ6z7zoxk+ftfTWuzxe0itbTvnCdDKcPZmzlw098AOPr1r5Y59/
+J/vqm41y/PitTn+oBmPufvHw3o+/ZPbZ2/5cdZ/p+C99AWRb1QbIOAUW8ICg4h8EbUbACWIrXzth
+4PxylsH8WRBSPkqKBksywv69iV+9I5SiSui35agwT6djIYE+2BEZxgc826uYkgTFQ0dxDYT+citZ
+D5kkmx+mjXzrex78kjjEfTUQK/bzFBKBE8UpRgqBVhwcFuWlRbVtsH5LlFkY3WND2ZkQinzxoLfQ
+eMYmaqWMfOseuJ4oRAM+MIt4pFnD6vg+pDnwhidkYqbIJpQyCehAS3KfyqAHx8WViDKMbNmEqhjE
+ianRkmbcIhHlGMEjXjBaesQkCTkZwi8qTpNzJGUCRblJDLoShZWUWL9YmcpXejKPoKwlLFsZylnK
+8pajNCUhewnMYdLyYrb8pBRReThmSkiVzUwm6AwTR2oWLJPTbFM1o0k3Zz6pLOATpqkORcFdEm5Z
+tYKm0dAZK3Wyjp1pCgs8YeVOz80TTfX+vGc8r2kifZ7JjzjzSwkHWs4PEjSgKStoQmnI0IY6tJt0
+rBlCNaNQij70ohi1XudkUj1QGhFyEH0P4gD6UYA6En0nFU1KM8rSls6pkb+EqBHBOdJtSi57MLVg
+TkXz0c616WlfwV55dgpBohaNl9bEpttcSrxIJkaH3YybkB5lVKaOjpGjcRhVrcrVAVGyq2ClXzjn
+VtJYhvWs6tthTYuJ1ramcIxujWsM4SrXumruq3bNq/6CqpyO6vWvJGsaXu0J2MKeTagrbeP2qmrY
+xrKukKFCrGMn20/GZkqylM1s8yz7GMxq9rPW8Swf6+JX0OZVtGmEJGdN+xvUmvRUq2X+LcBii0zm
+uFa2Vrut2A6LW/PRFpBu+21vhTVcHAmXtbotrgiPO7zBXo258vMmaNVqz4Q5Drod7JZP2Wpa6hL2
+mAv8XmXAJlTs6o6uPhOvOLuL3p2ZV2jrnW57Y/be+bZQuTa9JH5Rak7ZOne/bJTuZ/35z8DVt04E
+DhOAT5lLwB3YvsRULsLyq1TYXXePFE7qcMnTngcbc20cBiBygdvJnnl4MCS2Y2MRqVi8PffDItbr
+5E4cukXGdYA0dnAfuYoiFuVYl16FL4wbGqMc/Tik9Clygyf4o0RyMMmBXPL4DMnF7ByZytJ8Ky4F
+6UIrLzPLc4WKqMxb3xVmN8ySdKz+h49c3QTfKrBu/tLJ4izn6uT4v1HuYn+5LGYIC7mUIxJRWZH6
+ZT3Lza9jXqNSvTtaQHeZYIh2Y0SxGekrWtpMQNtuhQsN2UcL2NGG9uWk+xzfGXLaNXg2taT1O+pG
+S3nLfL5pqUFN6k/7RFWppvWpd2trO/vZ02CGsqx7HehZe9nYOGTQr5F962UT+zHODrarHYMhXFdQ
+1NNu9ZC1reiJNmfCtQ73uMgpbm6bkdzZ7jZpV3lHEaabu8pUNaxjys9mg3Tdg0Tx/9z97j/HOsb5
+/vdRB57igsMwzwF/prx1XcMWHxzfb5Qg3F79R0hKPLCXfm1FL77xR2Kc1djeNLz+DW7WeAczwiIH
+ecpXfnLw1i3kJZ/3tpEMc0KPPOH0jnnLc25zleu85w7/OZBrPnRz71zDe375zUvMcqAfnegzd7rU
+FY5yoVfc5FKKb64ZXPWoFx3rVHd5Np0I9tqSvelfD/rU9y3tddJ5S/U20NuxlM+5w73rcrc7r+Ju
+Hr3vHe9993tpMwwiwe9u69wUO9OtjvSz+1ztaWc8ydfeeKhX3uheT7zlr452s29eqhTLaj6pqbDE
+0lTrpi+7vtMlvptJF/Hs/raK9/zDxHV+7DGtvTYF9/fdf5p7bkcbs4HIc4473vdtV7rqJx95yjM/
+82Evvucp7nzcU7/5/H425o3+v1DXS9T7NDwo+AXa8bmwObXjb275703k9XPfoumHP0PF//36izT+
+C86//vfP//4f3/zu53H2R35ns2oa11QByF+vcX7+14Cc54AQWGOJ1VdQBVKDRn4ztW4XyHGRZFmZ
+1jgZaFIbKIITGHEVqHFOtVbH81gR2IIu+IIwOGdUVIJ2A3ojSFbhM4Ma9VDQBXrIFILIp3uthVM8
+GIOKJ4FGuHquc4NTdTdoYxQMeHtJKH36Q2knyGBC6GJTiHNbyGtdqEQ7+IVnZW1doxjAx4JIx1EZ
+J4ZMRVWaNk1JwzRlGBMbtYZs2FJR2Gl3uIeBZ3h8+Ic7lnyAOIhV5kNSY13+hJiIAVYjTEhziviI
+WRckjYh8kFiJ2WeFxId9lriJ0QZ4nPiJ/wd9oDiKj/d0pHiKU2F4yYWKrCh5XNiKsPiAkBeLtNgw
+M5KHtRg/Zggnq5iLjxg0lDR4vkiIv4NnvTiMDlhpxCaMyNh/qAV7P9WMRsiMs6GK+kGN0lhYxyhQ
+uJiNoYGNDLKN3lhU3Rha44hW4Age4niO1BM5rbOO7ChA8HhmSDOP8UhfGjRQ5XiPm6U9qWOP/Dgl
+AClzFzKQAQka6aiAcGOQB7kiDLmIqPaQDSkjEjkoArmPpJiQwbM5FTmRFdKR7CczIOmR3DGSEHdY
+GJmMJjmAKbKSJAkbLon+Wxr5kpIRk/s3kzSZdweJkzTJk6zok9NojRf2ONaYkrcBjWlGlJ1oV971
+htWXXko5Xm53hJMFPpOofOajXryBbgDGaJk4fSCmlezilRImaDRIiQIklod2llyHX0i5VFGpfYb1
+ljIYl4I4YEsZZHaZdNMllAb2PX65YHT5cUMpl9qYl+e1l6E4YsPHjoP5V48pjZF5WoiZi5PJlJVZ
+i5dZV5uZmIV5l5oFhUr4lVmpmJvXWwlilA13V6Lolqf5YlU4i2XpidZnYWq5fG25X+HhORj2N6rZ
+m4xIeLUpkwA3e2GpY8BJlYDVHefxm0uXlMWpnJgZe9GZW2lJndLZVtf+OJrhdZyrWZ0rxp3f2Z1Y
+AyAhRlkFkprWCZviWU8spTPOqTdbBZkKOYpkyJkAeIovE58EF5KWqDX8aZGguXhgBJd8yXfzl5m4
+WWwvpaBsyWQP56D50aD+1p4JSo8R+mR6maEWCqHQxnCbs6EY2pphaG8Ll2zCZqKlSIQIp6IhqqEg
+KovT0yVs8mNsRqMDijo1SpBHOVSReKCmwynbh2ov+qNAypq7xnZZ42tJuqLUU248qmxTAqWLGZse
+EqD4R6Q6Cp3hCYZP6l5zWaRWamIyJkYomqPRZYdOqodqKpts+qFMapiNOaKvGaOFeKRwaqe60ZTl
+ZYB3emh92qZ/qpP+aPicaaqnCwgWQLigeRpqpHeFUoioSkopZBmlaDqhrPegmuqiVHoxV6l5ltqi
+vISIjsqpQ5ippImVl1iqSfWpm9qonboxrRersLqnEiqjRlqlotqkpjiou+pFchqsc5qcQypwbvqr
+kjpxw7qst3p5vsqrJJqsh6qlwoqnpnp9k9pvuGqsbwqsl8qhxfp83JqrdXqtqzps31qh2tqh57qu
+4tqtoapSzKqD1Wqr89qj1JquwGatXqqvS4qu/Dql92qv9UqwUlqwiTqw+IqwC+uFAauu4fqK8Sqt
+Evus7sqS2Dqu7Zqx8BqxBLqxguqQquinhTeyIbtcJsuqKiuva5r+rSs7nidrsRULrbTqbZqoqiBL
+s8P5lOaqs44YqRQ7se/HJJ41nzHbGz6YnQpbrt8knM6as+rWfe6ZqsiqsTd7tdMqtLlJm1mLfhir
+tFvbsS4LtqAqtlbLs097oqTytVzriku7rRCrtmfrtmj7sDK7th87tdE3t+Das37btkBrt1rrs1QI
+uBybmek5trXabnnbrHQqoOzKuF07uZLbuP4Ktwiqt5YLuV5rgt4aufd1sNdWl6N7Fh7YspW7goFI
+mEdLslnKuao7tJ55sVF7fweYgKV7pbQbuof7rnt7koJLrKg7s716u6CLuT8buNhJt2F7rMnLvLwL
+va+6vHU7vdH+W72P27JICW7ax73f6r0BC766+rzYK7zKu7jaC2Hiy7TW277gKb1U+7vn677mC79O
+e7w7S66Hu73167xoWbjEC5bz+77ly7/Gyb7xq7jF27wLLMD2e8ADfL++O8EBnLblC8H2a8Cui7ka
+nLkVjLNYu7kULML/a6jXG8IlPLwMrL/p25jr27spHMEYXMDq278NbMEoTL05jL7H2sGGe8IOfMHq
+9MIqXLYyPMQ2HK0rDLWt6cNk68FLHMTym8E1PMM3DMJSjLwxfLdTvMVKbMQPjMRW/MX068QATMJR
+jMNanMZme8US/MH5u8OpS8Nve8RQDMZCfMdlXMUbjL+dyaj+OkzGQNzFbjzCMDu+cLy6uvrH55u0
+Z3zIUdWq0kvEg1bJTpnAfnxSvZfF+HtKs2q7fMnIk5zEhIzHODjKVkxTp4fFnezIpvzKnQwxXAnK
+i+y4cWyOY1zKReR8n4xJrpx6nEzBq2zHP/zG5Cu7bmzGJjzHcozJYeswo1dhZzi/RAyHpMzK2OzF
+cnyfgqjMgDzI2XzMawzJMMzGtxzL5izO6AzLbdzEfKzH4HzO4UzORRzIanzPhrzHLly7guyxpou7
+/Sm1tKxTAI23r+ufBNh+NpufB43MCE3QC/3Q8jfQE21QBY2EDS2A4XfRSJrR9VlUHJ059EfRIB3R
+Dn3SGp3+0Bfq0Yos0CpN0jlJuDE9099M0zZ90zid02IV0rnr0j5d0RDN0gEN1EQNvBZt0in900at
+1Gfqz5370lDN1AzdsJhWlFZ91Vid1Vq91Vzd1V791WCNTzWt096IpWR91mid1mpNnN8VPZBKkewM
+1yp4VDYIcXXtcWpIRvRLda7KQ5csf0DZbH3tuc6MRn+9kW0tlYHtLoMdauLX2HQE2XqWgnFt1yG5
+2GmK2YKk2XBBXufDK5vsNJ6tIEFlk2t92qid2qq92nXM2tRWhAXKm3M9UllI1QjoUD0YR713hjd4
+18xl1gh82/QafNG0qJ6cg6c6o7BNsJMxzV8zh2j42yywqtBJJno+NNzLA9wfGdbc3d3e7WbTDYva
+LWS7GHogFKDjTaa201PbxduCVV173a+tmN4NVxrtrXm2pzjorZla1kpxyN6jXdh6TYv0bc9GI3mm
+LdS/+N0M3uAO/uBF6do8vN4STl+kBeBjAVRP9bIVnqLKMjVqaNyUmNc12+EeXuKQIuLcJNm2bOKY
+yuEp/tbnnc6U6+InntTybMw1buMDrtw8Hifh/eO6A+FEftVoFRAAOw==
+
+------=_NextPart_000_0000_01C784A5.10285F20
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.dgp.toronto.edu/people/JamesStewart/378notes/22intervals/tree2.gif
+
+R0lGODlhsAJzAff/AAAAAAAAQAAAgAAA/wAgAAAgQAAggAAg/wBAAABAQABAgABA/wBgAABgQABg
+gABg/wCAAACAQACAgACA/wCgAACgQACggACg/wDAAADAQADAgADA/wD/AAD/QAD/gAD//yAAACAA
+QCAAgCAA/yAgACAgQCAggCAg/yBAACBAQCBAgCBA/yBgACBgQCBggCBg/yCAACCAQCCAgCCA/yCg
+ACCgQCCggCCg/yDAACDAQCDAgCDA/yD/ACD/QCD/gCD//0AAAEAAQEAAgEAA/0AgAEAgQEAggEAg
+/0BAAEBAQEBAgEBA/0BgAEBgQEBggEBg/0CAAECAQECAgECA/0CgAECgQECggECg/0DAAEDAQEDA
+gEDA/0D/AED/QED/gED//2AAAGAAQGAAgGAA/2AgAGAgQGAggGAg/2BAAGBAQGBAgGBA/2BgAGBg
+QGBggGBg/2CAAGCAQGCAgGCA/2CgAGCgQGCggGCg/2DAAGDAQGDAgGDA/2D/AGD/QGD/gGD//4AA
+AIAAQIAAgIAA/4AgAIAgQIAggIAg/4BAAIBAQIBAgIBA/4BgAIBgQIBggIBg/4CAAICAQICAgICA
+/4CgAICgQICggICg/4DAAIDAQIDAgIDA/4D/AID/QID/gID//6AAAKAAQKAAgKAA/6AgAKAgQKAg
+gKAg/6BAAKBAQKBAgKBA/6BgAKBgQKBggKBg/6CAAKCAQKCAgKCA/6CgAKCgQKCggKCg/6DAAKDA
+QKDAgKDA/6D/AKD/QKD/gKD//8AAAMAAQMAAgMAA/8AgAMAgQMAggMAg/8BAAMBAQMBAgMBA/8Bg
+AMBgQMBggMBg/8CAAMCAQMCAgMCA/8CgAMCgQMCggMCg/8DAAMDAQMDAgMDA/8D/AMD/QMD/gMD/
+//8AAP8AQP8AgP8A//8gAP8gQP8ggP8g//9AAP9AQP9AgP9A//9gAP9gQP9ggP9g//+AAP+AQP+A
+gP+A//+gAP+gQP+ggP+g///AAP/AQP/AgP/A////AP//QP//gP///yH5BAEAAP8ALAAAAACwAnMB
+QAj+AP8JHEiwoMGDCBMqXMiwocOHECNKnEixosWLGDNq3Mixo8ePIEOKHEmypMmTKFOqXMkSJYCK
+L18KlBmRZsubOHPq3Mmzp8+fQIN6tLmSqNCjSJMqXcq0qdOnE42mlAq1qtWrWLNq3ZoTgNeaOKkm
+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
+
+------=_NextPart_000_0000_01C784A5.10285F20
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.dgp.toronto.edu/people/JamesStewart/378notes/22intervals/int.gif
+
+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
+
+------=_NextPart_000_0000_01C784A5.10285F20
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.dgp.toronto.edu/people/JamesStewart/378notes/22intervals/emptytree.gif
+
+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
+
+------=_NextPart_000_0000_01C784A5.10285F20
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.dgp.toronto.edu/people/JamesStewart/378notes/22intervals/treea.gif
+
+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
+
+------=_NextPart_000_0000_01C784A5.10285F20
+Content-Type: text/css;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://www.dgp.toronto.edu/people/JamesStewart/378notes/style.css
+
+BODY {
+	BACKGROUND: white; COLOR: black; FONT-FAMILY: sans-serif
+}
+P.title1 {
+	FONT-WEIGHT: bold; MARGIN-LEFT: 0em; TEXT-ALIGN: center
+}
+P.title2 {
+	PADDING-BOTTOM: 1.5em; MARGIN-LEFT: 0em; TEXT-TRANSFORM: uppercase; =
+TEXT-ALIGN: center
+}
+H1 {
+	COLOR: purple; PADDING-TOP: 0.5em
+}
+H2 {
+	COLOR: teal; PADDING-TOP: 0.5em
+}
+H3 {
+	COLOR: olive; PADDING-TOP: 0.5em
+}
+DIV {
+	MARGIN-LEFT: 2em
+}
+DIV.example {
+	PADDING-LEFT: 1em; MARGIN-LEFT: 1em; BORDER-LEFT: thin
+}
+P.example {
+	MARGIN-LEFT: 2em
+}
+P.definition {
+	FONT-WEIGHT: bold; MARGIN-LEFT: 5em; MARGIN-RIGHT: 5em
+}
+P.equation {
+	MARGIN-LEFT: 2em
+}
+.question {
+	FONT-WEIGHT: bold; COLOR: purple; TEXT-ALIGN: center
+}
+IMG.example {
+	TEXT-ALIGN: center
+}
+IMG.graph {
+	TEXT-ALIGN: center
+}
+OL LI {
+	FONT-WEIGHT: bold; MARGIN: 2ex 0ex 0ex
+}
+OL {
+	MARGIN-TOP: 3ex; MARGIN-BOTTOM: 3ex; LIST-STYLE-TYPE: upper-roman
+}
+OL OL {
+	MARGIN-TOP: 3ex; MARGIN-BOTTOM: 3ex; LIST-STYLE-TYPE: lower-roman
+}
+.important {
+	BORDER-RIGHT: red thin double; PADDING-RIGHT: 0.5em; BORDER-TOP: red =
+thin double; PADDING-LEFT: 0.5em; PADDING-BOTTOM: 0.5em; BORDER-LEFT: =
+red thin double; PADDING-TOP: 0.5em; BORDER-BOTTOM: red thin double
+}
+CODE {
+	COLOR: brown; FONT-FAMILY: monospace; WHITE-SPACE: pre
+}
+.reference {
+	FONT-WEIGHT: bold; COLOR: red
+}
+
+------=_NextPart_000_0000_01C784A5.10285F20--

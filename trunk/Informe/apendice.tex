@@ -1,0 +1,29 @@
+\section{Apendice}
+
+\subsection{Demostración} 
+\large
+\textit{``Un numero compuesto $N$ no tiene mas de un factor por encima de su raiz cuadrada''}
+\vskip0.5cm
+\normalsize
+
+Supongamos que existe mas de un factor mayor a su raiz cuadrada. Llamemos $P_i$ y $P_j$ a esos dos números primos. Llamemos $P_1, P_2, .. P_m$ al resto de los números primos factores de $N$. \\
+Sea $A_i = P_i - raiz(N)$ y $A_j = P_j - raiz(N)$\\
+como $P_i$ y $P_j$ son mayores que la $raiz(N)$ entonces $A_i$ y $A_j$ son positivos
+	\[N=P_i*P_j*P_1*P_2*...*P_m = (raiz(N)+A_i)*(raiz(N)+A_j)*P_1*P_2*...*P_m =\]
+	\[= (raiz(N)^2 + A_i*raiz(N) + A_j*raiz(N) + A_i*A_j)*P_1*P_2*...*P_m =\]
+	\[= (N + (A_i+A_j)*raiz(N) + A_i*A_j)*P_1*P_2*...*P_m =\]
+Obviamente, toda esa suma es mayor a N. Como partimos diciendo que N era igual a esa suma llegamos a una contradicción.\\
+Por lo tanto, a lo sumo un factor puede ser mayor que la raíz cuadrada de N.
+
+
+\subsection{Demostración} 
+\large
+\textit{``Los números primos (mayores que 3) pueden expresarse de la siguiente forma: $6n±1$''}
+\vskip0.5cm
+\normalsize
+
+Todo número natural puede expresarse como $6n±r$, para algún $n$ natural y $r \in \{0,1,2,3,4,5\}$.\\
+$6n+0$ es divisible por 6 SIEMPRE, $6n+2$ y $6n+4$ son divisibles por 2 SIEMPRE, $6n+3$ es divisible por 3 SIEMPRE.\\
+Nos quedan 6n+1 y 6n-1 (o lo que es lo mismo a efectos del analisis, 6n+5), no proporcionan ninguna garantía de divisibilidad, por lo tanto los números primos solo pueden encontrarse entre ellos).
+
+

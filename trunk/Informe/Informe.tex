@@ -1,0 +1,69 @@
+\documentclass[a4paper, 10pt, notitlepage]{article}
+
+\usepackage{moreverb} %para importar codigo
+
+\usepackage{caratula} %paquete personal para la caratula del DC
+
+\usepackage[spanish,activeacute]{babel}
+\usepackage{babel} %paquete de idioma
+
+\usepackage[latin1]{inputenc}
+
+\usepackage{color}
+
+\usepackage{fancyhdr} %linea sup con comentarios
+
+\usepackage{listings}
+
+\usepackage{lscape} %para hoja apaisada
+
+\usepackage{framed} %para crear cajas de texto
+
+\usepackage{lastpage} %ultima pagina
+
+\addtolength{\topmargin}{-50pt} 
+\addtolength{\textwidth}{105pt}
+\addtolength{\textheight}{120pt}
+\addtolength{\oddsidemargin}{-50pt}
+
+\newcommand{\cuat}{1er cuatrimestre de 2007}
+
+%%% Encabezado y pie de p'agina
+\pagestyle{fancy}
+\fancyhead[LO]{Algoritmos y Estructura de Datos III}
+\fancyhead[C]{}
+\fancyhead[RO]{P\'agina \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyfoot{}
+
+\newcommand{\rbt}{\textit{ Árbol {\color{red}\textbf{Rojo}} y \textbf{Negro}} }
+\newcommand{\adi}{\textit{ Árbol de \textbf{Intervalos} }}
+
+\begin{document}
+\titulo{}
+\subtitulo{Trabajo Pr\'actico - $N^o$ 2}
+\fecha{Algoritmos y Estructura de Datos III}
+\materia{1er cuatrimestre 2007}
+\submateria{}
+\integrante{Garc\'ia, Ana Daniela}{530/05}{danita719@yahoo.com.ar}
+\integrante{Joaquin Miguez}{120/04}{jmiguez@dc.uba.ar}
+\integrante{Fernando Bugni}{611/05}{fernando.bugni@gmail.com}
+\integrante{Engler, Christian Alejandro}{314/05}{caeycae@gmail.com}
+%\logoimagefile{animaniacs.jpg}
+
+%caratula
+\maketitle{}
+
+%enunciado
+\input{enunciado.tex}
+\newpage
+
+%ejercicios
+\input{ejercicio1.tex}
+\newpage
+\input{ejercicio2.tex}
+\newpage
+\tableofcontents
+	
+\end{document}
+
