@@ -1,0 +1,82 @@
+
+\section{Ejercicio 1}
+
+\vskip0.5cm
+
+\subsection{\rbt}
+
+\vskip0.5cm
+
+\subsubsection{ROTACIONES}
+
+\begin{center}
+		\includegraphics{rotaciones.png} \\
+(figura 1.1)\\
+\end{center}
+
+Rotaciones simples para mantener el balanceo. (No son para hacerlo un AVL)
+
+\subsubsection{CASO 1}
+
+\begin{center}
+		\includegraphics{caso1.png} \\
+(figura 1.2)\\
+\end{center}
+
+Si A (Actual), B (Padre) y D (tio) son Rojos, estamos en \textsc{CASO 1}.\\
+Pintamos al padre y tio de Negro, y pintamos a C (Abuelo) de Rojo. Como el arbol era un \rbt ese abuelo era negro.\\
+Al hacer los cambios, alturas negras no se modifican. Por lo que hasta el abuelo tenemos todo arreglado.
+
+\subsubsection{CASO 2}
+
+\begin{center}
+		\includegraphics{caso2.png} \\
+(figura 1.3)\\
+\end{center}
+
+Si B (Actual) y A (padre) son rojos y el tio es negro (o es nil - tambien considerado como regro) y ademas B es hijo derecho de un padre que es hijo izquierdo (o B es hijo izquierdo de un padre que es hijo derecho), estamos en \textsc{CASO 2}\\
+Rotamos el padre a izquierda (o derecha segun el caso), y hemos reducido el \textsc{CASO 2} o un \textsc{CASO 3}.
+
+\subsubsection{CASO 3}
+
+\begin{center}
+		\includegraphics{caso3.png} \\
+(figura 1.4)\\
+\end{center}
+
+Si A (Actual) y B (padre) son rojos y el tio es negro (o es nil - tambien considerado como regro) y ademas B es hijo derecho de un padre que es hijo derecho (o B es hijo izquierdo de un padre que es hijo izquierdo), estamos en \textsc{CASO 3}\\
+Pintamos a padre negro, al abuelo rojo y y rotamos a derecha (o Izquerda segun el caso) al abuelo\\
+Las alturas negras no se modifican y la posición del abuelo quedaría negra, con ambos hijos rojo.
+
+\subsubsection{TEST de Inserciones}
+
+Hemos realizado un par de test para ``verificar'' el correcto fuincionemiento de las inserciones en el \rbt\\
+Las inserciones fueron las siguientes $[10, 20, 15, 30, 40]$.\\
+De esta manera probamos los casos mas interesantes:
+
+\vskip0.3cm
+
+\begin{tabular}{lll}
+de $ninguno$ &			 a $[10]$ 					&	(CASO 0: Insertar raiz)\\
+de $[10]$ &				 a $[10, 20]$				&	(CASO 0: Insertar con padres negro)\\
+de $[10, 20]$ &			 a $[10, 20, 15]$ 			&	(CASO 2)\\
+de $[10, 20, 15]$ &		 a $[10, 20, 15, 30]$ 		&	(CASO 1)\\
+de $[10, 20, 15, 30]$ &	 a $[10, 20, 15, 30, 40]$ 	&	(CASO 3)\\
+\end{tabular}
+
+\vskip0.3cm
+
+Nótese que en algunas de estas inserciones, \\
+los llamados recursivos, llaman tambien a otros casos de ``reacomodacion''.\\
+Para correr el test y observar la salida del programa se debe llamar al \verb|main| con parametro \verb|test|
+
+\begin{center}
+		\includegraphics{test_insercion.png} \\
+(figura 1.5)\\
+\end{center}
+
+\vskip0.5cm
+
+\subsection{\adi}
+
+\vskip0.5cm

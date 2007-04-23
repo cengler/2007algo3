@@ -1,0 +1,67 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introducci\'on}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Enunciado}
+
+\begin{framed}	
+
+\begin{center}
+
+\hspace{1cm}
+
+\LARGE
+UBA - FCEyN - Departamento de Computación\\
+\large
+ALGORITMOS Y ESTRUCTURAS DE DATOS III\\
+Trabajo Práctico $N^o$ 1\\
+Primera entrega: 7-5-2007, hasta las 19:30 horas\\
+Segunda entrega: 28-5-2007, hasta las 19:30 horas\\
+\small
+Ver información general sobre los Trabajos Prácticos en la página de la materia en Internet.
+\end{center}
+
+\hspace{1cm}
+
+Ver información general sobre los Trabajos Prácticos en la página de la materia en Internet.
+El Booble art es un programa que muestra el mapa de Buenos Aires y sus atracciones turísticas. A medida que vamos recorriendo el mapa en la pantalla, podemos hacer un click en un punto y nos muestra varias fotos que corresponden a lugares que están cerca del punto que marcamos.
+
+Nuestro objetivo es realizar un algoritmo que, dado un punto en el plano (la pantalla), decida cuáles son las fotos a mostrar.
+Para esto, vamos a considerar los siguientes criterios:
+
+\begin{itemize}
+\item Cada foto tiene una posición en el plano dada por sus coordenadas.
+\item La pantalla tiene un tamaño fijo de $s * t$
+\item Al clickear en un punto del plano, las fotos que deben mostrarse son TODAS aquellas fotos que contienen a ese punto (es decir, el punto está dentro del área dado por las coordenadas de la foto).
+\item Las fotos pueden tener diferentes tamaños, intersecarse, estar contenidas una dentro de otra, etc.
+\item Por supuesto, al listar las fotos a mostrar, pueden haber fotos que se intersecan, etc. Esto no nos preocupa, sólo queremos conocer la lista de fotos a mostrarse en otra pantalla, donde otro programa (que se hará en Algoritmos 4) acomodará estas fotos 
+\end{itemize}
+
+Vamos a realizar un preprocesamiento del conjunto de fotos para luego, cada vez que se realiza un click, podamos decidir qué fotos deben mostrarse en forma eficiente.
+
+\begin{enumerate}
+\item (a) Dada un conjunto de fotos, construir un $arbol de intervalos$ usando \textbf{árboles red black} (será explicado en clase) con las operación $Insertar$.\vskip0.1cm
+(b) Indicar el orden de las operación $insertar$ No es obligatorio que figure en el informe la justificación del orden de $insertar$ pero se preguntará sobre esto durante el coloquio.\vskip0.1cm
+(c) Calcular la complejidad \textsc{TEMPORAL Y ESPACIAL} de construir el árbol de intervalos.\vskip0.1cm
+(d) Diseñar un algoritmo que, dado un punto en el plano, decida el conjunto de fotos a mostrar. Para esto, implementar la operación $buscarInterseccion$.\vskip0.1cm
+(e) Calcular la complejidad \textsc{TEMPORAL Y ESPACIAL} de realizar una consulta (llamamos ``consulta'' a clickear sobre un punto del plano).\vskip0.1cm
+(f) Analizar el algoritmo midiendo el tiempo de ejecución tanto para el armado del árbol como para consultas. Es decir, para diferentes conjuntos de fotos (instancias), realizar varias consultas.\vskip0.1cm
+\item Ahora, pensemos la siguiente variante. Cada tanto, el programa Booble art se actualiza y adiciona nuevas fotos a su mapa. Explicar cómo cambia el algoritmo anterior, sus funciones, etc. Calcular la complejidad de la función $insertar$ para este caso.
+\end{enumerate}
+
+Entrada \verb|Tp2Ej1.in| Este archivo contiene varias instancias de entrada. La primera línea contiene el número de instancias. Cada instancia es definida de la siguiente manera. La primera línea contiene el número de fotos $n$, las siguientes n líneas contiene las coordenadas de las fotos: $x0$ $x1$ $y0$ $y1$, donde $x0 \leq x1$ y $y0 \leq  y1$.
+
+\verb|Tp2Ej1d.in| Este archivo contiene consultas para hacer sobre todas las instancias del archivo anterior. La primera línea contiene la cantidad de consultas ($k$) y las siguientes $k$ líneas contienen las coordenadas del punto del plano de la forma $x$ $y$.
+
+NOTA: NO ES OBLIGATORIO QUE LA ENTRADA SE INGRESE POR LINEA DE COMANDOS, PERO EL QUE QUIERE PUEDE HACERLO DE AMBAS MANERAS.
+
+Salida \verb|Tp2Ej4.out| Por cada instancia, cada línea contiene una foto que se debe mostrar identificada por sus cuatro coordenadas. La salida de cada instancias está separada por un 0. 
+
+Bibliografía: 
+
+Fotocopiadora: ``Introduction to Algorithms'', Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, and Clifford Stein. Capítulo 13.
+
+Sugerencia: Para buscar información sobre interval-trees pueden consultar en\\
+\verb|http://www.dgp.toronto.edu/people/JamesStewart/378notes/22intervals/|
+
+\end{framed}
+\normalsize
