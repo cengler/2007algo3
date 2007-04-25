@@ -8,7 +8,7 @@ public class ArbolDeIntervalos {
 	/**
 	 * Este es el ancho del arbol de intervalos
 	 */
-	private final int ANCHO_ARBOL= Parser.ANCHO;
+	//private final int ANCHO_ARBOL= Parser.ANCHO;
 		
 	public ArbolDeIntervalos()
 	{
