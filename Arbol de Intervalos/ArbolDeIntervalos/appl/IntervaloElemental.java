@@ -24,7 +24,13 @@ public class IntervaloElemental implements Comparable<Object> {
 
 	@Override
 	public String toString() {
-		return String.valueOf(numero);
+		String res = String.valueOf(numero) + "[";
+		for(int i=0; i<indexOfImg.size(); i++)
+		{
+			res += indexOfImg.get(i).toString();
+		}
+		res += "]";
+		return res;
 	}	
 	
 	
