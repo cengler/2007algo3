@@ -1,5 +1,6 @@
 package ArbolDeIntervalos.appl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -127,9 +128,30 @@ public class Main {
 			System.out.print(" [");
 			for (int j = 0; j< l.get(k).size(); j++)
 				if (j == l.get(k).size()-1)
-					System.out.print(l.get(k).get(j) + ",");
+					System.out.print(l.get(k).get(j).toString() + ",");
 			System.out.print("] ");
 		}
 		System.out.println("}");
+	}
+	
+	/**
+	 * 
+	 * @param y
+	 * @param indexOfFotosEnX
+	 * @param imagenes
+	 * @return
+	 */
+	public List<Imagen> buscarImagenesQCoinciden(Integer y, List<Integer> indexOfFotosEnX, List<Imagen> imagenes)
+	{
+		List<Imagen> res = new ArrayList<Imagen>();
+		for(int j=0; j<indexOfFotosEnX.size(); j++)
+		{
+			int index_j = indexOfFotosEnX.get(j);
+			if(imagenes.get(index_j).y_0 <= j && imagenes.get(index_j).y_1 >= j )
+			{
+				res.add(imagenes.get(index_j));
+			}
+		}
+		return res;
 	}
 }
