@@ -36,6 +36,7 @@ public class ArbolDeIntervalos {
 		//tenemos en img las coordenadas que vamos a meter en la imagen
 		//Nombre de intervalo: indexOf
 		insertarIntervalo(indexOf, img.x_0, img.x_1, 0, ANCHO_ARBOL, this.getRaiz());
+		System.out.println(this.toString());
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -46,7 +47,8 @@ public class ArbolDeIntervalos {
 		{
 			//guardo la imagen 
 			// aca falta la lista
-			actual.dato.numero = indexOf;
+			actual.dato.indexOfImg.add(indexOf);
+			/**actual.dato.numero = indexOf;*/
 		}else{
 			//sino quiere decir que debo bajar por una de sus hojas
 			//decido si bajo por una y/o por otra
@@ -64,5 +66,12 @@ public class ArbolDeIntervalos {
 		}
 		
 	}
+
+	@Override
+	public String toString() {
+		return this.arn.toString();
+	}
+	
+	
 
 }
