@@ -33,7 +33,9 @@ public class Main {
 				
 				for(int k=0; k<instancias.size(); k++)
 				{
-					//ArbolDeIntervalos arbolX= construirArbolX(instancias.get(k));
+					ArbolDeIntervalos arbolX= construirArbolX(instancias.get(k));
+					System.out.println(arbolX.toString());
+					k=1000;
 				}
 				
 				
@@ -89,7 +91,11 @@ public class Main {
 		Set<IntervaloElemental> puntosX= Parser.intervalosElementalesX(imagenes);
 		ArbolDeIntervalos res= new ArbolDeIntervalos();
 		res.insertarMuchos(puntosX);
-		
+		for(int i=0; i<imagenes.size(); i++)
+		{
+			System.out.println("aca");
+			res.insertarImagen(i, imagenes.get(i));
+		}
 		return res;
 	}
 	

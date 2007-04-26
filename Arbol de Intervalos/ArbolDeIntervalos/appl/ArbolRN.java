@@ -134,7 +134,6 @@ public class ArbolRN<T extends Comparable<? super T>>
 						actual.padre.padre.color = Nodo.ROJO;		// pinto al abuelo de negro
 
 						actual = actual.padre.padre;         		// listo por ahora, luego reacomodamos
-						System.out.println("hol");
 					}
 					else											// la tia es de color negro	
 					{
@@ -264,7 +263,7 @@ public class ArbolRN<T extends Comparable<? super T>>
 		while(it.hasNext())
 		{
 			insertar(it.next());
-			System.out.println(this.toString());
+			//System.out.println(this.toString());
 		}
 	}
 	
