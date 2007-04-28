@@ -1,5 +1,7 @@
 package ArbolDeIntervalos.appl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class ArbolDeIntervalos {
@@ -69,6 +71,60 @@ public class ArbolDeIntervalos {
 			
 		}
 		
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Imagen> Busqueda(int x, int y, ArrayList<Imagen> Imagenes_levantadas)
+	{
+		//creo la lista q voy a devolver
+		List<Imagen> res= new ArrayList<Imagen>();
+		
+		Nodo<IntervaloElemental> actual = this.getRaiz();
+		//referencia a la raiz
+		
+		//Vamos a recorrer el arbol de intervalos para obtener X
+		
+		//EsHoja hay q hacerlo
+		while(!EsHoja(actual))
+		{
+			//Sigo el camino q correspone
+			if( x <= actual.dato.numero)
+			{
+				actual = actual.izq;				
+			}else{
+			//  actual.dato.numero < x  		
+				actual = actual.der;				
+			}
+		}
+		
+		//Joya llege a la Hoja, ahora busco en su lista a Y
+		List<Integer> Lista= new ArrayList<Integer>();
+		Lista = actual.dato.indexOfImg;
+		
+		for(int i= 0; i< Lista.size(); i++)
+		{
+			int index = Lista.get(i);
+			int pic_y_0 = Imagenes_levantadas.get(index).y_0;
+			int pic_y_1	= Imagenes_levantadas.get(index).y_1;
+			
+			if ((pic_y_0 <= y) && (y <= pic_y_1))
+			{
+				//agrego el intervalo a la solucion
+				res.add(Imagenes_levantadas.get(index));				
+			}
+			//Lo hice asi para q se entienda lo mas facil posible
+			
+			//Igual buscar en esta lista habria que mantenerla ordenada 
+			//o algo para mejorar la busqueda
+		}
+		
+		return res;		
+	}
+	
+	//ESTO LO AGREGE SOLO PARA Q ME SAQUE EL ERROR de EsHoja
+	private boolean EsHoja(Nodo<IntervaloElemental> actual) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
