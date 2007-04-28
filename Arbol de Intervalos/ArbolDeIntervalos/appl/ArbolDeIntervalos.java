@@ -40,28 +40,32 @@ public class ArbolDeIntervalos {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void insertarIntervalo(int indexOf, int a, int b, int min, int max, Nodo <IntervaloElemental> actual)
+	public void insertarIntervalo(int indexOf, int x_0, int x_1, int min, int max, Nodo <IntervaloElemental> actual)
 	{
 		//el intervalo que quiero insertar es justo el donde estoy
-		if (( a <= min) && ( max<= b))
+		if (( x_0 <= min) && ( max<= x_1))
 		{
 			//guardo la imagen 
-			// aca falta la lista
 			actual.dato.indexOfImg.add(indexOf);
-			/**actual.dato.numero = indexOf;*/
 		}else{
 			//sino quiere decir que debo bajar por una de sus hojas
 			//decido si bajo por una y/o por otra
 				
-			if(a < actual.dato.numero)
+			if(x_0 < actual.dato.numero)
 			{
-				insertarIntervalo(indexOf, a, b, min, actual.dato.numero, actual.izq);
+				if( x_1 > actual.dato.numero)
+				{
+					insertarIntervalo(indexOf, x_0, x_1, min, x_0, actual.izq);
+				}else
+				{
+					insertarIntervalo(indexOf, x_0, x_1, min, actual.dato.numero, actual.izq);
+				}
 			}
 
-			if(actual.dato.numero < b)
+			/*if(actual.dato.numero < x_1)
 			{
-				insertarIntervalo(indexOf, a, b, actual.dato.numero, max, actual.der);
-			}
+				insertarIntervalo(indexOf, x_0, x_1, actual.dato.numero, max, actual.der);
+			}*/
 			
 		}
 		
