@@ -27,7 +27,7 @@ public class Parser {
 	/**
 	 * Cantidad de instancias del fichero de entrada
 	 */
-	private static int numeroDeInstancias;
+	public static int numeroDeInstancias;
 	/**
 	 * Ancho de la pantalla
 	 */
@@ -115,5 +115,25 @@ public class Parser {
 		}
 
 		return res;
+	}
+
+	public static void guardar(List<Imagen> res, String ficheroSalida) {
+		
+		FileWriter salida = null;
+		try {
+			salida = new FileWriter(ficheroSalida);
+		} catch (IOException e) {
+			System.err.println("No se pudo crear " + ficheroSalida);
+			e.printStackTrace();
+		}
+		for (int k = 0; k< res.size(); k++)
+		{
+			try {
+				salida.write("Algo");
+			} catch (IOException e) {
+				System.err.println("No se pudo escribir en " + ficheroSalida);
+				e.printStackTrace();
+			}
+		}
 	}
 }
