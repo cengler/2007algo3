@@ -41,7 +41,7 @@ public class Tp1Ej1 {
 				for(int k=0; k<instancias.size(); k++)
 				{
 					ArbolDeIntervalos arbolX= construirArbolX(instancias.get(k));
-					List<Imagen> res = imagenesQueCruzan(arbolX, Integer.valueOf(args[k+1]).intValue(), Integer.valueOf(args[k+2]).intValue());
+					List<Imagen> res = arbolX.busqueda(Integer.valueOf(args[k+1]).intValue(), Integer.valueOf(args[k+2]).intValue(), instancias.get(k));
 					Parser.guardar(res, ARCHIVO_SALIDA);
 				}
 			}
@@ -55,9 +55,6 @@ public class Tp1Ej1 {
 		}
 	}
 	
-	private static List<Imagen> imagenesQueCruzan(ArbolDeIntervalos arbolX, int x, int y) {
-		return null;
-	}
 
 	/**
 	 * Construye el arbol Red-Black de intervalos con todos los intervalos elementales

@@ -9,7 +9,7 @@ public class ArbolDeIntervalos {
 	private ArbolRN<IntervaloElemental> arn = null;
 	/**
 	 * Este es el ancho del arbol de intervalos
-	 */
+	*/
 	private final int ANCHO_ARBOL= Parser.ANCHO;
 		
 	public ArbolDeIntervalos()
@@ -74,7 +74,7 @@ public class ArbolDeIntervalos {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Imagen> Busqueda(int x, int y, ArrayList<Imagen> Imagenes_levantadas)
+	public List<Imagen> busqueda(int x, int y, List<Imagen> Imagenes_levantadas)
 	{
 		//creo la lista q voy a devolver
 		List<Imagen> res= new ArrayList<Imagen>();
@@ -85,7 +85,7 @@ public class ArbolDeIntervalos {
 		//Vamos a recorrer el arbol de intervalos para obtener X
 		
 		//EsHoja hay q hacerlo
-		while(!EsHoja(actual))
+		while(!actual.esHoja())
 		{
 			//Sigo el camino q correspone
 			if( x <= actual.dato.numero)
@@ -119,12 +119,6 @@ public class ArbolDeIntervalos {
 		}
 		
 		return res;		
-	}
-	
-	//ESTO LO AGREGE SOLO PARA Q ME SAQUE EL ERROR de EsHoja
-	private boolean EsHoja(Nodo<IntervaloElemental> actual) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override

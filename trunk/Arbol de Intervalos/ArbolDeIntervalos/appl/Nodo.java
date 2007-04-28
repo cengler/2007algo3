@@ -14,6 +14,7 @@ public class Nodo<T extends Comparable<? super T>>
 	 * DEFINICION ROJO == 1
 	 */
 	public final static byte ROJO = 1;
+	
 	/**
 	 * DEFINICION NEGRO == 0
 	 */
@@ -22,36 +23,45 @@ public class Nodo<T extends Comparable<? super T>>
 	/**
 	 * Nodo superior
 	 */
-	protected Nodo padre;
+	public Nodo padre;
+	
 	/**
 	 * Nodo inferior izquierdo
 	 */
-	protected Nodo izq;
+	public Nodo izq;
+	
 	/**
 	 * Nodo inferior derecho
 	 */
-	protected Nodo der;
+	public Nodo der;
+	
 	/**
 	 * Dato de tipo T (Debe implementar comparable)
 	 */
-	protected T dato;
+	public T dato;
+	
 	/**
 	 * Color (Puede ser Rojo o Negro, ROJO = 1, Negro = 0 )
 	 */
-	protected byte color;
+	public byte color;
 
+	/**
+	 * Indentificador de HOJA
+	 */
+	public byte esHoja;
+	
 	/**
 	 * Constructor de Nodo
 	 * 
 	 * @param dato recibe el dato a ingresar en el nodo
 	 */
-	public Nodo(T dato)
+	protected Nodo(T dato)
 	{ 
 		this.dato = dato; 
 		izq = null; 
 		der = null;
 		padre = null; 
-		color = ROJO;				
+		color = ROJO;
 	}
 
 	/**
@@ -61,7 +71,7 @@ public class Nodo<T extends Comparable<? super T>>
 	 * 
 	 * @return "R" si la raiz es ROJA y "R" si la raiz es NEGRA
 	 */
-	public String Color2String()
+	private String Color2String()
 	{
 		if (color == ROJO)
 		{
@@ -91,5 +101,16 @@ public class Nodo<T extends Comparable<? super T>>
 		res += ") ";
 		return res;
 	}
+	
+	/**
+	 * Nos dice cuando un nodo tiene dos punteros a null
+	 * es decir que es nil (Hoja del Arbol Rojo y Negro)
+	 * 
+	 * @return True si el noso es hoja, falso si no lo es
+	 */
+	protected boolean esHoja() {
+		return false;
+	}
+
 }
 
