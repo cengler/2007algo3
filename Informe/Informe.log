@@ -1,7 +1,7 @@
-This is pdfeTeX, Version 3.141592-1.21a-2.2 (MiKTeX 2.4) (preloaded format=latex 2006.11.23)  22 APR 2007 15:39
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (MiKTeX 2.4) (preloaded format=latex 2006.11.23)  28 APR 2007 00:33
 entering extended mode
-**F:/Escritorio/tp2/Informe/Informe.tex
-(F:/Escritorio/tp2/Informe/Informe.tex
+**F:/FACU/Algoritmos*y*Estructura*de*Datos*III/SVN*2007-04-27/Informe/Informe.tex
+(F:/FACU/Algoritmos y Estructura de Datos III/SVN 2007-04-27/Informe/Informe.tex
 LaTeX2e <2003/12/01>
 Babel <v3.8g> and hyphenation patterns for english, dumylang, nohyphenation, german, ngerman, spanish, french, loaded.
 (C:\Archivos de programa\MikTeX\Main\tex\latex\base\article.cls
@@ -226,20 +226,19 @@ File: caso3.png Graphic file (type png)
  <use caso3.png> [5 <caso2.png> <caso3.png>]
 <test_insercion.png, id=74, 385.44pt x 303.534pt>
 File: test_insercion.png Graphic file (type png)
- <use test_insercion.png>) [6 <test_insercion.png>] (ejercicio2.tex)
-[7] (Informe.toc)
+ <use test_insercion.png> [6 <test_insercion.png>]) [7] (ejercicio2.tex) [8] (Informe.toc)
 \tf@toc=\write5
- AED: lastpage setting LastPage [8] (Informe.aux) ) 
+ AED: lastpage setting LastPage [9] (Informe.aux) ) 
 Here is how much of TeX's memory you used:
- 3325 strings out of 95499
- 41618 string characters out of 1188477
+ 3326 strings out of 95499
+ 41762 string characters out of 1188477
  102982 words of memory out of 1101627
- 6290 multiletter control sequences out of 60000
- 10633 words of font info for 37 fonts, out of 1000000 for 2000
+ 6291 multiletter control sequences out of 60000
+ 10992 words of font info for 38 fonts, out of 1000000 for 2000
  14 hyphenation exceptions out of 4999
- 32i,13n,43p,426b,283s stack positions out of 5000i,500n,10000p,200000b,32768s
+ 32i,13n,43p,481b,283s stack positions out of 5000i,500n,10000p,200000b,32768s
 PDF statistics:
- 84 PDF objects out of 300000
+ 87 PDF objects out of 300000
  0 named destinations out of 300000
  36 words of extra memory for PDF output out of 65536
 <C:\Archivos de programa\MikTeX\Main\fonts\type1\bluesky\cm\cmti10.pf
@@ -253,4 +252,4 @@ ivos de programa\MikTeX\Main\fonts\type1\bluesky\cm\cmtt10.pfb><C:\Archivos de p
 cm\cmr10.pfb><C:\Archivos de programa\MikTeX\Main\fonts\type1\bluesky\cm\cmr12.pfb><C:\Archivos de programa\MikTeX\Main\
 fonts\type1\bluesky\cm\cmmi8.pfb><C:\Archivos de programa\MikTeX\Main\fonts\type1\bluesky\cm\cmmi12.pfb><C:\Archivos de 
 programa\MikTeX\Main\fonts\type1\bluesky\cm\cmbx12.pfb>
-Output written on Informe.pdf (8 pages, 960121 bytes).
+Output written on Informe.pdf (9 pages, 971326 bytes).

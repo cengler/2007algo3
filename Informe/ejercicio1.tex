@@ -1,13 +1,9 @@
 
-\section{Ejercicio 1}
+\section{\rbt}
 
 \vskip0.5cm
 
-\subsection{\rbt}
-
-\vskip0.5cm
-
-\subsubsection{ROTACIONES}
+\subsection{ROTACIONES}
 
 \begin{center}
 		\includegraphics{rotaciones.png} \\
@@ -16,7 +12,7 @@
 
 Rotaciones simples para mantener el balanceo. (No son para hacerlo un AVL)
 
-\subsubsection{CASO 1}
+\subsection{CASO 1}
 
 \begin{center}
 		\includegraphics{caso1.png} \\
@@ -27,7 +23,7 @@ Si A (Actual), B (Padre) y D (tio) son Rojos, estamos en \textsc{CASO 1}.\\
 Pintamos al padre y tio de Negro, y pintamos a C (Abuelo) de Rojo. Como el arbol era un \rbt ese abuelo era negro.\\
 Al hacer los cambios, alturas negras no se modifican. Por lo que hasta el abuelo tenemos todo arreglado.
 
-\subsubsection{CASO 2}
+\subsection{CASO 2}
 
 \begin{center}
 		\includegraphics{caso2.png} \\
@@ -37,7 +33,7 @@ Al hacer los cambios, alturas negras no se modifican. Por lo que hasta el abuelo
 Si B (Actual) y A (padre) son rojos y el tio es negro (o es nil - tambien considerado como regro) y ademas B es hijo derecho de un padre que es hijo izquierdo (o B es hijo izquierdo de un padre que es hijo derecho), estamos en \textsc{CASO 2}\\
 Rotamos el padre a izquierda (o derecha segun el caso), y hemos reducido el \textsc{CASO 2} o un \textsc{CASO 3}.
 
-\subsubsection{CASO 3}
+\subsection{CASO 3}
 
 \begin{center}
 		\includegraphics{caso3.png} \\
@@ -48,7 +44,7 @@ Si A (Actual) y B (padre) son rojos y el tio es negro (o es nil - tambien consid
 Pintamos a padre negro, al abuelo rojo y y rotamos a derecha (o Izquerda segun el caso) al abuelo\\
 Las alturas negras no se modifican y la posición del abuelo quedaría negra, con ambos hijos rojo.
 
-\subsubsection{TEST de Inserciones}
+\subsection{TEST de Inserciones}
 
 Hemos realizado un par de test para ``verificar'' el correcto fuincionemiento de las inserciones en el \rbt\\
 Las inserciones fueron las siguientes $[10, 20, 15, 30, 40]$.\\
@@ -77,6 +73,114 @@ Para correr el test y observar la salida del programa se debe llamar al \verb|ma
 
 \vskip0.5cm
 
-\subsection{\adi}
+\section{\adi}
+
+\subsection{Ideas para la eleccion de estructura del \adi}
+
+%//////////////////////////////////////////////////////////////////
+
+\subsubsection{Dos Árboles}
+
+La primera idea que se nos acurrio para extender el arbol de intervalos a dos dimenciones, fue simplemente tener dos árboles (uno para cada coordenada).\\
+La busqueda entonces consistia en buscar las imagenes correspondientes al la coordenada $x$ y luego las imagenes correspondientes a la coordenada $y$. Por ultimo, debiamos encontrar las imagenes que aparecieran en los dos conjuntos.
+
+\vskip0.3cm
+
+\Large Costo temporal de la construccion \normalsize
+
+\vskip0.3cm
+
+\Large Costo espacial de la construccion \normalsize
+
+\vskip0.3cm
+
+\Large Costo temporal total de la consulta \normalsize
+
+%(log(n) + k)		// busqueda en x
+%(log(n) + k')		// busqueda en y
+%k'' * log(k'')		// se teniamos las imagenes ordenadas (ver si se podia hacer lineal)
+
+\vskip0.3cm
+
+\Large Costo espacial de la consulta  \normalsize
+
+%//////////////////////////////////////////////////////////////////
+
+\subsubsection{Árbol con ambas coordenadas}
+
+Otra idea fue, hacer un solo arbol en el que los ``Intervalos Elementales'' se construyeran con todos los puntos de inicio y finalizacion de las coordenadas $x$ e $y$. En cada nodo de este arbol se encontrabas un arreglo (o alguna otra estructura) con las imagenes que le correspondian en $x$ y otro arreglo con las imagenes que le correspondian en $y$.\\
+De esta manera teniamos un solo arbol y espacialmente reduciamos la cantidad de nodos existentes. (La cantidad de nodos con dos arboles era 
+
+	\[\#\{IntervalosElementales(x)\} + \{IntervalosElementales(y)\}\]
+	
+y de esta manera era 
+
+	\[\#(\{IntervalosElementales(x)\} \cup \{IntervalosElementales(y)\})\]
+
+\vskip0.3cm
+
+\Large Costo temporal de la construccion \normalsize
+
+\vskip0.3cm
+
+\Large Costo espacial de la construccion \normalsize
+
+\vskip0.3cm
+
+\Large Costo temporal total de la consulta \normalsize
+
+\vskip0.3cm
+
+\Large Costo espacial de la consulta \normalsize
+
+%//////////////////////////////////////////////////////////////////
+
+\subsubsection{Árboles dentro de Árbol}
+
+...
+
+\vskip0.3cm
+
+\Large Costo temporal de la construccion \normalsize
+
+\vskip0.3cm
+
+\Large Costo espacial de la construccion \normalsize
+
+\vskip0.3cm
+
+\Large Costo temporal total de la consulta \normalsize
+
+\vskip0.3cm
+
+\Large Costo espacial de la consulta \normalsize
+
+
+%//////////////////////////////////////////////////////////////////
+
+\subsubsection{Árboles unico (en alguna de las dos coordenadas)}
+
+...
+
+\vskip0.3cm
+
+\Large Costo temporal de la construccion \normalsize
+
+\vskip0.3cm
+
+\Large Costo espacial de la construccion \normalsize
+
+\vskip0.3cm
+
+\Large Costo temporal total de la consulta \normalsize
+
+\vskip0.3cm
+
+\Large Costo espacial de la consulta \normalsize
+
+%//////////////////////////////////////////////////////////////////
+
+\subsection{Conculciones sobre los algoritmos y eleccion}
+
 
 \vskip0.5cm
