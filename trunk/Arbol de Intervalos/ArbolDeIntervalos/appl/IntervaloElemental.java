@@ -13,6 +13,8 @@ public class IntervaloElemental implements Comparable<Object> {
 		this.numero = numero;
 	}
 
+	public IntervaloElemental() {}
+
 	public int compareTo(Object intElem) {
 		if (this.numero < ((IntervaloElemental)intElem).numero){
 			return -1;
@@ -24,12 +26,25 @@ public class IntervaloElemental implements Comparable<Object> {
 
 	@Override
 	public String toString() {
-		String res = String.valueOf(numero) + "[";
-		for(int i=0; i<indexOfImg.size(); i++)
+		String res;
+		if( numero != -1)
 		{
-			res += indexOfImg.get(i).toString();
+			res = String.valueOf(numero) + "[ ";
+			for(int i=0; i<indexOfImg.size(); i++)
+			{
+				res += indexOfImg.get(i).toString() + " ";
+			}
+			res += "]";
 		}
-		res += "]";
+		else
+		{
+			res = "[ ";
+			for(int i=0; i<indexOfImg.size(); i++)
+			{
+				res += indexOfImg.get(i).toString() + " ";
+			}
+			res += "]";	
+		}
 		return res;
 	}	
 	

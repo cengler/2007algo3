@@ -1,4 +1,6 @@
 package ArbolDeIntervalos.appl;
+
+
 /**
  * Noda para arbol "Rojo Y Negro"
  * 
@@ -51,17 +53,42 @@ public class Nodo<T extends Comparable<? super T>>
 	public byte esHoja;
 	
 	/**
-	 * Constructor de Nodo
+	 * Constructor de Nodo (Hoja)
 	 * 
-	 * @param dato recibe el dato a ingresar en el nodo
+	 * Construye un Nodo que es Hoja
 	 */
-	protected Nodo(T dato)
+	@SuppressWarnings("unchecked")
+	protected Nodo()
 	{ 
-		this.dato = dato; 
+		dato = null;
 		izq = null; 
 		der = null;
 		padre = null; 
+		color = NEGRO;
+		esHoja = 1;
+	}
+	
+	/**
+	 * Constructor de Nodo
+	 * 
+	 * @param dato recibe el dato a ingresar en el nodo
+	 * @param datoHi Espera un dato vacio para setear a la hoja izq
+	 * @param datoHd Espera un dato vacio para setear a la hoja der
+	 */
+	@SuppressWarnings("unchecked")
+	protected Nodo(T dato, T datoHi, T datoHd)
+	{ 
+		this.dato = dato; 
+		izq = new Nodo(); 
+		der = new Nodo();
+		padre = null; 
 		color = ROJO;
+		esHoja = 0;
+		
+		izq.padre = this;
+		der.padre = this;
+		izq.dato = datoHi;
+		der.dato = datoHd;
 	}
 
 	/**
@@ -71,7 +98,7 @@ public class Nodo<T extends Comparable<? super T>>
 	 * 
 	 * @return "R" si la raiz es ROJA y "R" si la raiz es NEGRA
 	 */
-	private String Color2String()
+	private String Color2String() //tick
 	{
 		if (color == ROJO)
 		{
@@ -89,14 +116,22 @@ public class Nodo<T extends Comparable<? super T>>
 	 * 
 	 */
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		String res;
 		res = " (";
 		if(this != null)
 		{
-			if(izq != null){res += (izq).toString();}else { res += ".";}
-			res += "[" + this.Color2String() + " " + dato + "]";
-			if(der != null){res += (der).toString();}else { res += ".";}
+			if(!this.esHoja())
+			{
+				res += (izq).toString();
+				res += "[" + this.Color2String() + " " + dato + "]";
+				res += (der).toString();
+			}else{
+				res += ".";
+				res += "[" + this.Color2String() + " H " + dato + "]";
+				res += ".";
+			}
 		}
 		res += ") ";
 		return res;
@@ -106,10 +141,11 @@ public class Nodo<T extends Comparable<? super T>>
 	 * Nos dice cuando un nodo tiene dos punteros a null
 	 * es decir que es nil (Hoja del Arbol Rojo y Negro)
 	 * 
-	 * @return True si el noso es hoja, falso si no lo es
+	 * @return True si el nodo es hoja, falso si no lo es
 	 */
-	protected boolean esHoja() {
-		return false;
+	protected boolean esHoja() //tick
+	{
+		return (this.esHoja == 1);
 	}
 
 }
