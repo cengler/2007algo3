@@ -49,7 +49,7 @@ public class Imagen {
 	@Override
 	public String toString() {
 		String res;
-		res = "(" + x_0 + " " + x_1 + ", " + y_0 + " " + y_1 + ")";
+		res = x_0 + " " + x_1 + " " + y_0 + " " + y_1;
 		return res;
 	}
 }

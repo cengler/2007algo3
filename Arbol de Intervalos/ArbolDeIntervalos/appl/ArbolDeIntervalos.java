@@ -1,8 +1,10 @@
 package ArbolDeIntervalos.appl;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class ArbolDeIntervalos {
 	
@@ -19,12 +21,7 @@ public class ArbolDeIntervalos {
 	
 	public void insertar(IntervaloElemental ie)
 	{
-		arn.insertar(ie);
-	}
-	
-	public void insertarMuchos(Set<IntervaloElemental> intervalos)
-	{
-		arn.insertarMuchos(intervalos);
+		arn.insertar(ie, new IntervaloElemental(-1), new IntervaloElemental(-1));
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -38,86 +35,91 @@ public class ArbolDeIntervalos {
 		//tenemos en img las coordenadas que vamos a meter en la imagen
 		//Nombre de intervalo: indexOf
 		insertarIntervalo(indexOf, img.x_0, img.x_1, 0, ANCHO_ARBOL, this.getRaiz());
-		System.out.println(this.toString());
+		//System.out.println(this.toString());
 	}
 	
 	@SuppressWarnings("unchecked")
 	public void insertarIntervalo(int indexOf, int x_0, int x_1, int min, int max, Nodo <IntervaloElemental> actual)
 	{
 		//el intervalo que quiero insertar es justo el donde estoy
-		if (( x_0 <= min) && ( max<= x_1))
+		if (( x_0 == min) && ( max == x_1))
 		{
 			//guardo la imagen 
 			actual.dato.indexOfImg.add(indexOf);
 		}else{
 			//sino quiere decir que debo bajar por una de sus hojas
 			//decido si bajo por una y/o por otra
-				
-			if(x_0 < actual.dato.numero)
-			{
-				if( x_1 > actual.dato.numero)
-				{
-					insertarIntervalo(indexOf, x_0, x_1, min, x_0, actual.izq);
-				}else
-				{
-					insertarIntervalo(indexOf, x_0, x_1, min, actual.dato.numero, actual.izq);
-				}
+
+			if(x_0 < actual.dato.numero) 
+			{ 
+				if( x_1 > actual.dato.numero) 
+				{ 
+					insertarIntervalo(indexOf, x_0, actual.dato.numero, min, actual.dato.numero, actual.izq); 
+				}else 
+				{ 
+					insertarIntervalo(indexOf, x_0, x_1, min, actual.dato.numero, actual.izq); 
+				} 
+			} 
+
+			if(x_1 > actual.dato.numero) 
+			{ 
+				if( x_0 < actual.dato.numero) 
+				{ 
+					insertarIntervalo(indexOf, actual.dato.numero, x_1, actual.dato.numero, max, actual.der); 
+				}else 
+				{ 
+					insertarIntervalo(indexOf, x_0, x_1, actual.dato.numero, max, actual.der); 
+				} 
 			}
 
-			/*if(actual.dato.numero < x_1)
-			{
-				insertarIntervalo(indexOf, x_0, x_1, actual.dato.numero, max, actual.der);
-			}*/
-			
 		}
-		
+
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Imagen> busqueda(int x, int y, List<Imagen> Imagenes_levantadas)
-	{
-		//creo la lista q voy a devolver
-		List<Imagen> res= new ArrayList<Imagen>();
-		
-		Nodo<IntervaloElemental> actual = this.getRaiz();
-		//referencia a la raiz
-		
-		//Vamos a recorrer el arbol de intervalos para obtener X
-		
-		//EsHoja hay q hacerlo
-		while(!actual.esHoja())
+	private void buscarIndicesX(int x, Nodo<IntervaloElemental> actual, Set<Integer> res)
+	{	
+		if(actual != null)
 		{
-			//Sigo el camino q correspone
-			if( x <= actual.dato.numero)
+			for(int i=0; i<actual.dato.indexOfImg.size(); i++)
 			{
-				actual = actual.izq;				
-			}else{
-			//  actual.dato.numero < x  		
-				actual = actual.der;				
+				res.add(actual.dato.indexOfImg.get(i));
+			}
+
+			if( x <= actual.dato.numero)
+			{	
+				buscarIndicesX(x, actual.izq, res);	
+			}
+			
+			if( x >= actual.dato.numero)
+			{		
+				buscarIndicesX(x, actual.der, res);
 			}
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Imagen> busqueda(int x, int y, List<Imagen> Imagenes_levantadas)
+	{
+		List<Imagen> res = new ArrayList<Imagen>();
 		
-		//Joya llege a la Hoja, ahora busco en su lista a Y
-		List<Integer> Lista= new ArrayList<Integer>();
-		Lista = actual.dato.indexOfImg;
+		Set<Integer> resX = new TreeSet<Integer>();			// creo un conjunto
 		
-		for(int i= 0; i< Lista.size(); i++)
+		buscarIndicesX(x, this.getRaiz(), resX);
+		
+		Iterator<Integer> it = resX.iterator();
+		
+		while(it.hasNext())
 		{
-			int index = Lista.get(i);
+			Integer index = it.next();
 			int pic_y_0 = Imagenes_levantadas.get(index).y_0;
 			int pic_y_1	= Imagenes_levantadas.get(index).y_1;
 			
 			if ((pic_y_0 <= y) && (y <= pic_y_1))
 			{
-				//agrego el intervalo a la solucion
-				res.add(Imagenes_levantadas.get(index));				
+				res.add(Imagenes_levantadas.get(index));
 			}
-			//Lo hice asi para q se entienda lo mas facil posible
-			
-			//Igual buscar en esta lista habria que mantenerla ordenada 
-			//o algo para mejorar la busqueda
 		}
-		
 		return res;		
 	}
 

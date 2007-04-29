@@ -1,8 +1,5 @@
 package ArbolDeIntervalos.appl;
 
-import java.util.Iterator;
-import java.util.Set;
-
 /**
  * Arbol "Rojo Y Negro", con operaciones de insercion y busqueda
  * 
@@ -25,7 +22,7 @@ public class ArbolRN<T extends Comparable<? super T>>
 	public ArbolRN()
 	{  
 		raiz = null;				
-	} 
+	}
 
 	/**
 	 * Metodo para averiguar si un arbol es vacio o no
@@ -33,12 +30,9 @@ public class ArbolRN<T extends Comparable<? super T>>
 	 * @return devuelve TRUE si el arbol esta vacio 
 	 * y FALSE si no lo esta
 	 */
-	public boolean vacio() 
+	public boolean vacio()
 	{
-		if (raiz == null)
-			return true;
-		else
-			return false;
+		return (raiz == null);
 	}
 
 	/**
@@ -58,7 +52,7 @@ public class ArbolRN<T extends Comparable<? super T>>
 		Nodo padre = null;					// será el padre
 		Nodo hijo = this.raiz;				// será el hijo
 
-		while (hijo != null)				// mientras haya hijos
+		while ( hijo!=null && !hijo.esHoja() )	// mientras haya hijos
 		{
 			padre = hijo;					// el padre es mi hijo
 			if (nuevo.dato.compareTo(hijo.dato) == -1) 
@@ -66,15 +60,23 @@ public class ArbolRN<T extends Comparable<? super T>>
 			else
 				hijo = padre.der;			// actualizo mi hijo
 		}
+		
 		nuevo.padre = padre;				// el padre es el conseguido
+		/*nuevo.izq= new Nodo();				// y sus dos hijos son hojas
+		nuevo.der= new Nodo();*/		
 
 		if (padre == null) 					// si es huerfano, es la raiz del arbol
 			raiz = nuevo;
-		else 
-			if (nuevo.dato.compareTo(padre.dato) == -1)
-				padre.izq = nuevo;
-			else  
-				padre.der = nuevo;								
+		else								// sino
+			if (nuevo.dato.compareTo(padre.dato) == -1) // si el dato es menor que el del padre
+			{
+				padre.izq = null;			// borro la hoja izq del padre
+				padre.izq = nuevo;			// y coloco a nuevo en su lugar
+			}else										// y si el dato es mayor que el del padre
+			{
+				padre.der = null;			// borro la hoja der del padre
+				padre.der = nuevo;			// y coloco a nuevo en su lugar
+			}
 	}
 	
 	/**
@@ -85,20 +87,22 @@ public class ArbolRN<T extends Comparable<? super T>>
 	 * @param dato dato a ingresar en el arbol red black
 	 */
 	@SuppressWarnings("unchecked")
-	public void insertar(T dato)
+	public void insertar(T dato, T datoHi, T datoHd)
 	{
-		Nodo actual = new Nodo(dato); 								// nodo con el elemento a ingresar		
+		Nodo actual = new Nodo(dato, datoHi, datoHd); 								// nodo con el elemento a ingresar		
 		this.insertarABB(actual);									// lo inserto de la forma usual en un ABB
 
 		while (actual != raiz && actual.padre.color == Nodo.ROJO)
 			// mientras no haya reacomodado hasta la raiz
-			// y solo se el padre es rojo (si fuera negro no habria que hacer nada)
+			// y solo si el padre es rojo (si fuera negro no habria que hacer nada)
 		{
 			if (actual.padre == actual.padre.padre.izq)				// si el padre de actual es hijo izquierdo
 			{
 				Nodo tio = actual.padre.padre.der;					// me quedo con el tio 																
-				if (tio != null && tio.color == Nodo.ROJO) 			// si el tio existe
-				{ 													// y es de color rojo
+//				if (tio != null && tio.color == Nodo.ROJO) 			// si el tio existe// y es de color rojo
+//***el tio no puede no existir, en todo caso sera una hoja->negro y no entra
+				if (tio.color == Nodo.ROJO) 						// si el tio es de color rojo
+				{ 													
 																	// ESTAMOS EN CASO 1 ver informe       
 					actual.padre.color = Nodo.NEGRO;      			// pinto al padre de negro
 					tio.color = Nodo.NEGRO;            				// pinto al tio de negro
@@ -127,7 +131,9 @@ public class ArbolRN<T extends Comparable<? super T>>
 				if (actual.padre == actual.padre.padre.der ) 		// si el padre de actual es hijo derecho
 				{
 					Nodo tia = actual.padre.padre.izq;				// me quedo con la tia 	 																								
-					if ((tia != null) && tia.color == Nodo.ROJO)	// si la tia existe y es de color rojo
+//					if ((tia != null) && tia.color == Nodo.ROJO)	// si la tia existe y es de color rojo
+//***la tia no puede no existir, en todo caso sera una hoja->negro y no entra
+					if (tia.color == Nodo.ROJO) 					// si la tia es de color rojo
 					{ 												// ESTAMOS EN CASO 1 ver informe     
 						actual.padre.color = Nodo.NEGRO;     		// pinto al padre de negro
 						tia.color = Nodo.NEGRO;           			// pinto a la tia de negro
@@ -137,7 +143,7 @@ public class ArbolRN<T extends Comparable<? super T>>
 					}
 					else											// la tia es de color negro	
 					{
-						if (actual == actual.padre.izq)				// hijo derecho del padre
+						if (actual == actual.padre.izq)				// hijo izquierdo del padre
 																	// ESTAMOS EN CASO 2 ver informe
 						{	
 							actual = actual.padre;           		// vamos a rotar al padre
@@ -164,11 +170,13 @@ public class ArbolRN<T extends Comparable<? super T>>
 	 * @param b Nodo a partir del cual se realiza la rotacion
 	 */
 	@SuppressWarnings("unchecked")
-	private void rotarIzq(Nodo b)
+	private void rotarIzq(Nodo b) // TICK
 	{
 		Nodo a = b.der;					// me guardo el subarbol A
 		b.der = a.izq;					// DER de B = y
-		if( a.izq != null )				// si y no es nil
+//***seria si a no es hoja
+//		if( a.izq != null )				// si y no es nil
+		if( !a.esHoja())				// si y no es nil
 			a.izq.padre = b;			// el padre de y es B 
 		a.padre = b.padre;				// el padre de A es el padre de B
 
@@ -192,11 +200,13 @@ public class ArbolRN<T extends Comparable<? super T>>
 	 * @param a Nodo a partir del cual se realiza la rotacion
 	 */
 	@SuppressWarnings("unchecked")
-	private void rotarDer(Nodo a)
+	private void rotarDer(Nodo a) // TICK
 	{
 		Nodo b = a.izq;					// me guardo el subarbol B
 		a.izq = b.der;					// DER de B = y
-		if( b.der != null )				// si y no es nil
+//		***seria si a no es hoja
+//		if( b.der != null )				// si y no es nil
+		if( !b.esHoja())				// si y no es nil
 			b.der.padre = a;			// el padre de y es A
 		b.padre = a.padre;				// el padre de B es el padre de A
 
@@ -220,7 +230,7 @@ public class ArbolRN<T extends Comparable<? super T>>
 	 * 
 	 * @return "R" si la raiz es ROJA y "R" si la raiz es NEGRA
 	 */
-	public String Color2String()
+	public String Color2String() // TICK
 	{
 		if (raiz.color == Nodo.ROJO)
 		{
@@ -243,29 +253,12 @@ public class ArbolRN<T extends Comparable<? super T>>
 		res = "ARBOL RB: (";
 		if(this.raiz != null)
 		{
-			if(raiz.izq != null){res += (raiz.izq).toString();}else { res += ".";}
+			res += (raiz.izq).toString();
 			res += "[" + this.Color2String() + " " + raiz.dato + "]";
-			if(raiz.der != null){res += (raiz.der).toString();}else { res += ".";}
+			res += (raiz.der).toString();
 		}
 		res += ")";
 		return res;
 	}
-
-	/**
-	 * Simplifica la creacion de pruebas permitiendo la insercion
-	 * de un array de valores a ingresar
-	 * 
-	 * @param datos array de datos a ingresar en el arbol
-	 */
-	public void insertarMuchos(Set<T> datos)
-	{
-		Iterator<T>  it = datos.iterator();
-		while(it.hasNext())
-		{
-			insertar(it.next());
-			//System.out.println(this.toString());
-		}
-	}
-	
 }
 
