@@ -3,9 +3,7 @@ package ArbolDeIntervalos.appl;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
 
 /**
  * Parser para levantar de un fichero, todas las instancias de "imagenes"
@@ -28,14 +26,6 @@ public class Parser {
 	 * Cantidad de instancias del fichero de entrada
 	 */
 	public static int numeroDeInstancias;
-	/**
-	 * Ancho de la pantalla
-	 */
-	public static final int ANCHO = 100;
-	/**
-	 * Alto de la pantalla
-	 */
-	public static final int ALTO = 100;
 	
 	/**
 	 * Parser para levantar de un fichero, todas las instancias de "imagenes"
@@ -96,25 +86,6 @@ public class Parser {
 		}
 		
 		return instancias;
-	}
-	
-	/**
-	 * Consigue todos los inicios y comienzos de los intervalos elementales
-	 * 
-	 * @param imagenes Lista de imagenes de los que quiero los intervalos elementales
-	 * @return devuelve un conjunto con todos los inicios y comienzos de los intervalos elementales
-	 */
-	public static Set<IntervaloElemental> intervalosElementalesX(List<Imagen> imagenes){
-
-		Set<IntervaloElemental> res = new TreeSet<IntervaloElemental>();
-
-		for(int k=0; k< imagenes.size(); k++)
-		{
-			res.add(new IntervaloElemental(imagenes.get(k).x_0));
-			res.add(new IntervaloElemental(imagenes.get(k).x_1));
-		}
-
-		return res;
 	}
 
 	public static void guardar(List<Imagen> res, String ficheroSalida) {
@@ -209,11 +180,14 @@ public class Parser {
 		
 	}
 	
-	public static void imprimirCero(String archivo_salida) {
+	public static void imprimirSeparador(String archivo_salida, boolean uno) {
 		try {
 			FileWriter fichero= new FileWriter(archivo_salida, true);
 			BufferedWriter salida_buff = new BufferedWriter(fichero);
-			salida_buff.write("0");
+			if(uno)
+				salida_buff.write("1");
+			else
+				salida_buff.write("0");
 			salida_buff.newLine();
 			salida_buff.close();
 			fichero.close();

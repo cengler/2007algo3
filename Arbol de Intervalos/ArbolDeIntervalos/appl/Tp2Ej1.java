@@ -1,8 +1,6 @@
 package ArbolDeIntervalos.appl;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Desde aqui se llamaran todos los test
@@ -90,41 +88,16 @@ public class Tp2Ej1 {
 		
 		for(int k=0; k<instancias.size(); k++)
 		{
-			ArbolDeIntervalos arbolX= construirArbolX(instancias.get(k));
+			ArbolDeIntervalos arbolX = new ArbolDeIntervalos();
+			arbolX.llenarArbol(instancias.get(k), true);
 			for(int i=0; i<consultas.size(); i+=2)
 			{
-				List<Imagen> res = arbolX.busqueda(consultas.get(i), consultas.get(i+1), instancias.get(k));
+				List<Imagen> res = arbolX.busqueda(consultas.get(i), consultas.get(i+1), instancias.get(k), true);
 				Parser.guardar(res, archivo_salida);
+				Parser.imprimirSeparador(archivo_salida, true);
 			}
-			Parser.imprimirCero(archivo_salida);
+			Parser.imprimirSeparador(archivo_salida, false);
 		}
-	}
-	
-
-	/**
-	 * Construye el arbol Red-Black de intervalos con todos los intervalos elementales
-	 * con las fotos ingrasadas, listo para que se realicen las busquedas
-	 * 
-	 * @param imagenes Imagenes que se encuentran en la pantalla
-	 * @return arbol de intervalos preparado para la busqueda
-	 */
-	private static ArbolDeIntervalos construirArbolX( List<Imagen> imagenes)
-	{
-		Set<IntervaloElemental> puntosX= Parser.intervalosElementalesX(imagenes);
-		ArbolDeIntervalos res= new ArbolDeIntervalos();
-		
-		Iterator<IntervaloElemental>  it = puntosX.iterator();
-		while(it.hasNext())
-		{
-			res.insertar(it.next());
-		}
-											//res.insertarMuchos(puntosX);
-		
-		for(int i=0; i<imagenes.size(); i++)
-		{
-			res.insertarImagen(i, imagenes.get(i));
-		}
-		return res;
 	}
 	
 	/**
