@@ -1,1 +1,16 @@
 \select@language {spanish}
+\contentsline {section}{\numberline {1}Introducci\'on}{2}
+\contentsline {subsection}{\numberline {1.1}Enunciado}{2}
+\contentsline {section}{\numberline {2}\textit { \'Arbol {\color {red}\textbf {Rojo}} y \textbf {Negro}} }{4}
+\contentsline {subsection}{\numberline {2.1}ROTACIONES}{4}
+\contentsline {subsection}{\numberline {2.2}CASO 1}{4}
+\contentsline {subsection}{\numberline {2.3}CASO 2}{5}
+\contentsline {subsection}{\numberline {2.4}CASO 3}{5}
+\contentsline {subsection}{\numberline {2.5}TEST de Inserciones}{6}
+\contentsline {section}{\numberline {3}\textit { \'Arbol de \textbf {Intervalos} }}{6}
+\contentsline {subsection}{\numberline {3.1}Ideas para la eleccion de estructura del \textit { \'Arbol de \textbf {Intervalos} }}{6}
+\contentsline {subsubsection}{\numberline {3.1.1}Dos \'Arboles}{6}
+\contentsline {subsubsection}{\numberline {3.1.2}\'Arbol con ambas coordenadas}{7}
+\contentsline {subsubsection}{\numberline {3.1.3}\'Arboles dentro de \'Arbol}{7}
+\contentsline {subsubsection}{\numberline {3.1.4}\'Arboles unico (en alguna de las dos coordenadas)}{7}
+\contentsline {subsection}{\numberline {3.2}Conculciones sobre los algoritmos y eleccion}{7}

@@ -73,110 +73,287 @@ Para correr el test y observar la salida del programa se debe llamar al \verb|ma
 
 \vskip0.5cm
 
-\section{\adi}
 
-\subsection{Ideas para la eleccion de estructura del \adi}
 
-%//////////////////////////////////////////////////////////////////
 
-\subsubsection{Dos Árboles}
+\begin{itemize}
+\item \textit{prepararArregloEstanImagenes(int im)}
 
-La primera idea que se nos acurrio para extender el arbol de intervalos a dos dimenciones, fue simplemente tener dos árboles (uno para cada coordenada).\\
-La busqueda entonces consistia en buscar las imagenes correspondientes al la coordenada $x$ y luego las imagenes correspondientes a la coordenada $y$. Por ultimo, debiamos encontrar las imagenes que aparecieran en los dos conjuntos.
+inicializa un arreglo en false\\
+Costo $O(im)$
 
-\vskip0.3cm
+\item \textit{intervalosElementales(Lista(imagenes) img) $->$ Conj(puntos):res}
 
-\Large Costo temporal de la construccion \normalsize
+\begin{framed}
+\begin{verbatimtab}[4]
+intervalosElementales(Lista(imagenes) img) -> Conj(puntos):res
+{
+	desde 0 a Tam(img) hacer	// O(1) / itera im veces
+	{
+		res <- agregar(x_0)		// O(log(2im))
+		res <- agregar(x_1)		// O(log(2im))
+	}
+	return res					// O(1)
+}
+\end{verbatimtab}
+\end{framed}
+Como ingresamos dos puntos por imagen a lo sumo el conjunto tendra $2im$, por lo que pudimos acotar la insercion $log(2im)$.\\
+El costo total de este algoritmo es pues $O(im*log(im))$
+            
+\item \textit{insertar(IntervaloElemental ie)}
 
-\vskip0.3cm
+\begin{framed}
+\begin{verbatimtab}[4]
+insertar(IntervaloElemental ie)
+{
+       ArbolRojoNegro.insertar(ie);
+}
+\end{verbatimtab}
+\end{framed}
+Insertar llama a la funcion insertar de \rbt que se va a encargar de insertarlo y ademas de re-establecer el arbol como Red-Black aplicando rotaciones.
 
-\Large Costo espacial de la construccion \normalsize
+\begin{framed}
+\begin{verbatimtab}[4]
+insertar(T dato)
+{
+       Nodo actual(dato);        // nodo con el elemento a ingresar
+       insertarABB(actual);      // lo inserto de la forma usual en un ABB
 
-\vskip0.3cm
+       Mientras (No haya reacomodado hasta la raiz y si el padre es rojo)
+       {
+               Si (el padre del actual nodo es hijo izquierdo)
+               {
+                       //Me quedo con el tio
+                       Nodo tio = hijo izquierdo;
 
-\Large Costo temporal total de la consulta \normalsize
+                       Si El tio es Rojo Entonces
+                       {       ESTAMOS EN EL CASO 1    }
+                       Sino Es Negro
+                       {
+                               Si actual es hijo derecho del padre
+                               {
+                                       { ESTAMOS EN EL CASO 2 }
+                               // hemos reducido del caso 2 al 3
+                               }
+                                       { ESTAMOS EN EL CASO 3 }
 
-\vskip0.3cm
+                       }
 
-\Large Costo espacial de la consulta  \normalsize
+               }Sino
+               {
+                       Si el padre de actual es hijo derecho
+                       {
+                               // me quedo con la tia
+                               Nodo tia = Nodo Izquierdo;
 
-%//////////////////////////////////////////////////////////////////
+                               Si La tia es Roja Entonces
+                               {       ESTAMOS EN EL CASO 1    }
+                               Sino Es Negra
+                               {
+                                       Si actual es hijo izquierdo del padre
+                                       {
+                                               { ESTAMOS EN EL CASO 2 }
+                                       // hemos reducido del caso 2 al 3
+                                       }
+                                               { ESTAMOS EN EL CASO 3 }
+                               }
+                       }
+               }
+       Raiz.Color = Negro; //Ponemos la raiz en Negro
 
-\subsubsection{Árbol con ambas coordenadas}
+       }
+}
+\end{verbatimtab}
+\end{framed}
+En esta funcion utilizamos insertarABB que nos inserta un nodo en el arbol de la forma tradicional, que sabemos que tarda log(n).
 
-Otra idea fue, hacer un solo arbol en el que los ``Intervalos Elementales'' se construyeran con todos los puntos de inicio y finalizacion de las coordenadas $x$ e $y$. En cada nodo de este arbol se encontrabas un arreglo (o alguna otra estructura) con las imagenes que le correspondian en $x$ y otro arreglo con las imagenes que le correspondian en $y$.\\
-De esta manera teniamos un solo arbol y espacialmente reduciamos la cantidad de nodos existentes. (La cantidad de nodos con dos arboles era 
+Luego tenemos un ``mientras'' que va a iterar hasta que el padre sea Rojo y no haya llegado hasta la raiz. Esto es, en peor caso, recorer el arbol desde el lugar donde insertamos el nodo hasta la raiz. Esto seria ir recorriendo lo ya recorrido pero para arriba. Además cada paso realiza rotaciones y cambios de datos que son O(1). \\
+Entonces Complejidad Total en peor caso sería: $O(log(n) $(ida-insercionABB)$ + log(n) $(vuelta hasta la raiz)$) = O(log(n))$
 
-	\[\#\{IntervalosElementales(x)\} + \{IntervalosElementales(y)\}\]
+\item \textit{llenarIntervalosElementales(Lista(Imagen):imagenes, bool:X)}
+\begin{framed}
+\begin{verbatimtab}[4]          
+llenarIntervalosElementales(Lista(Imagen):imagenes, bool:X)
+{
+	Conj(IntervaloElemental):puntos = intervalosElementales(imagenes, X);	
+										// O(im*log(im))
+
+	por cada punto de "puntos"		// itera im veces
+		insertar(punto)				// O(log(n))
+}
+\end{verbatimtab}
+\end{framed}
+
+Entonces la complejidad de insertar todos los intervalos elementales es\\
+$O(im*log(im)) + O(im*log(n))$
+            
+\item \textit{insertarImagen(indice\_img, inicio, final, minimo, maximo, Nodo actual)}
+\begin{framed}
+\begin{verbatimtab}[4]
+insertarImagen(indice_img, inicio, final, minimo, maximo, Nodo actual)
+{
+	// inicio es el comienzo del intervalo que quiero insertar
+	// final es el final del intervalo que quiero insertar
+	// minimo es el minimo del intervalo actual,
+	// maximo es el maximo del intervalo actual, Nodo actual)
+
+	// caso base:
+	si el intervalo que quiero insertar es justo donde estoy //O(1)
+ 		agrego indice_img a la lista de imagenes del nodo actual //O(1)
 	
-y de esta manera era 
+	// caso recursivo:
+	sino quiere decir que debo bajar por uno de sus hijos
+	{
+		//decido si bajo por uno y/o por otro
+		
+		si comienzo del intervalo < numero del nodo actual  //O(1)
+			hago recursión siguiendo por el hijo izq
+			(reacomodando los parametros de manera adecuada)
+						//reacomodar los param es O(1)
+		
+		si final del intervalo > numero del nodo actual  //O(1)
+			hago recursión siguiendo por el hijo der
+			(reacomodando los parametros de manera adecuada)
+						//reacomodar los param es O(1)
+	}
+}
+\end{verbatimtab}
+\end{framed}
 
-	\[\#(\{IntervalosElementales(x)\} \cup \{IntervalosElementales(y)\})\]
+Es importante destacar que, como todas las imagenes que insetaremos estan constituidas por intervalos elementales que ya están en el árbol, sabemos que hallaremos siempre algun nodo donde colocar cada ``pedacito'' de la imagen.\\
+Lo máximo que podemos llegar a recorrer por cada pedacito es log(n) (que es la altura del arbol) pues comenzamos por la raiz y a lo sumo seguimos iterando hasta la hoja.
 
-\vskip0.3cm
+El problema aquí es que, en general, nuestra imagen no esta compuesta por un solo intervalo elemental, sino por varios
 
-\Large Costo temporal de la construccion \normalsize
+Recursión:\\
+Podríamos decir que, en general, la recursión se hará más veces hacia un sólo lado (izq o der), pero es importante saber cuántas veces nos podría pasar que tengamos que seguir hacia ambos lados $-$si fuera posible que para alguna imagen tengamos que ir siempre por los 2 caminos, terminaríamos recorriendo todos los nodos del arbol y esto es O(n)! $-$, entonces buscamos el peor caso...
 
-\vskip0.3cm
+Veamos:
 
-\Large Costo espacial de la construccion \normalsize
+Estuvimos pensando mucho al respecto, y notamos los siguientes items:
+\begin{itemize}
+	\item por invariante de \adi, una misma imagen puede estar a lo sumo 2 veces en un mismo nivel del arbol
+	\item si en un mismo nivel figura en 2 nodos la imagen, en los niveles superiores debera estar entre medio de estos (a la izquierda del nodo de la derecha y a la derecha del nodo de la izquierda)
+\end{itemize}
 
-\vskip0.3cm
+Con estas observaciones y analizando detalladamente llegamos a la conclusión de que la peor disposición sería la siguiente:
 
-\Large Costo temporal total de la consulta \normalsize
+\begin{center}
+		\includegraphics{peorcaso.png} \\
+(figura 1.5)\\
+\end{center}
 
-\vskip0.3cm
+Como se ve, la imagen X aparece 2 veces en todos los niveles menos en los 2 primeros $-$notar que si apareciera en el primer nivel 
+(raiz) no puede estar mas en ningun lugar del arbol, y si apareciera en alguno de los 2 nodos del segundo nivel, entonces ya no 
+aparece en ningun nodo mas de esa mitad del arbol.
 
-\Large Costo espacial de la consulta \normalsize
+Y este recorrido es 4*log(n), pues:
 
-%//////////////////////////////////////////////////////////////////
+\begin{center}
+		\includegraphics{peorcaso2.png} \\
+(figura 1.5)\\
+\end{center}
 
-\subsubsection{Árboles dentro de Árbol}
+La cantidad de ejes recorridos es 2 (primer nivel) + 4 * log(n) (demás niveles), y esto es O(log(n)).
 
-...
+Por lo tanto, insertar una imagen en el arbol SIEMPRE tiene cota superior O(log(n)).
 
-\vskip0.3cm
+      
+\item \textit{insertarImagenes(Lista(Imagen):imagenes, bool:X)}
+\begin{framed}
+\begin{verbatimtab}[4]
+insertarImagenes(Lista(Imagen):imagenes, bool:X)
+{
+	depeniendo de si es por X o por Y
+		por cada imagnen de "imagenes"
+			insertarImagen(i, inicio, fin, 0, ANCHO_ARBOL, raiz);
+}
+\end{verbatimtab}
+\end{framed}
 
-\Large Costo temporal de la construccion \normalsize
-
-\vskip0.3cm
-
-\Large Costo espacial de la construccion \normalsize
-
-\vskip0.3cm
-
-\Large Costo temporal total de la consulta \normalsize
-
-\vskip0.3cm
-
-\Large Costo espacial de la consulta \normalsize
-
-
-%//////////////////////////////////////////////////////////////////
-
-\subsubsection{Árboles unico (en alguna de las dos coordenadas)}
-
-...
-
-\vskip0.3cm
-
-\Large Costo temporal de la construccion \normalsize
-
-\vskip0.3cm
-
-\Large Costo espacial de la construccion \normalsize
-
-\vskip0.3cm
-
-\Large Costo temporal total de la consulta \normalsize
-
-\vskip0.3cm
-
-\Large Costo espacial de la consulta \normalsize
-
-%//////////////////////////////////////////////////////////////////
-
-\subsection{Conculciones sobre los algoritmos y eleccion}
+\item \textit{llenarArbol( Lista(Imagen):imagenes, bool:X) $->$ ArbolDeIntervalos}
+\begin{framed}
+\begin{verbatimtab}[4]          
+llenarArbol( Lista(Imagen):imagenes, bool:X) -> ArbolDeIntervalos
+{
+	prepararArregloEstanImagenes(im);
+	llenarIntervalosElementales(imagenes, X);
+	insertarImagenes(imagenes, X);
+}
+\end{verbatimtab}
+\end{framed}
 
 
-\vskip0.5cm
+
+
+\end{itemize}	
+
+ 
+            
+\begin{itemize}
+
+\item \textit{buscarIndices(int punto, Nodo actual, conj(int))}
+\begin{framed}
+\begin{verbatimtab}[4]
+buscarIndices(int punto, Nodo actual, conj(int))
+{
+	si no llegue al final del arbol
+		res <- agregar(los indices que aparecen en el nodo)
+		{
+		si  punto es <= actual_numero
+			buscarIndices(punto, Izq(actual), conj(int))
+		si  punto es >= actual_numero
+			buscarIndices(punto, Der(actual), conj(int))		
+		}
+}
+\end{verbatimtab}
+\end{framed}
+
+Este es un algoritmo recursivo, que separa siempre el problema es dos partes iguales.\\
+¿Entra siempre por las dos ramas?... No\\
+Existe a lo sumo solo un nodo en el arbol que tiene el mismo valor que el punto buscado, por lo tanto el algoritmo, hace a lo sumo dos caminos.\\
+Que recorra uno o dos caminos es despreciable, por lo que su complejidad se puede expresar de la siguinte manera.
+\[
+\left\{
+\displaystyle\matrix{
+T(0) = d\hfill\cr
+T(n) = T(n/2) + c + k_i
+} 
+\right.
+\]
+desarrollando una vez 
+\[T(n) = T(n/4) + c + k_i + c + k_j\]
+la formula general es
+\[T(n) = T(n/2^h) + h*c + \displaystyle\sum_{i=1}^h k_i \]
+con $h$ es la altura del arbol\\
+como es un \rbt la altura es cercana a $log(n)$
+\[T(n) = T(n/2^{log(n)}) + log(n)*c + \displaystyle\sum_{i=1}^h k_i\]
+como a cada imagen la incuentro una sola vez por camino (pues si la encontre en un nodo no puedo escontrarla en sus hijos), habré encontrado al final mis $k$ imagenes buscadas.
+\[T(n) = T(n/n) + log(n)*c + k\]
+\[T(n) = T(1) + log(n)*c + k\]
+Esto da un complejidad total de $O(log(n) + k)$.
+
+\item \textit{busqueda(x, y, Lista(Imagen):Imagenes\_levantadas, bool:X) $->$ Lista(Imagen)}
+\begin{framed}
+\begin{verbatimtab}[4]
+busqueda(x, y, Lista(Imagen):img_levantadas, bool:X) -> Lista(Imagen):res
+{
+	dependiendo si es por X o por Y					// O(1)
+		Lista(int):resIndices;						// O(1)
+		buscarIndices(x, raiz, resIndices);			// O(log(n) + k)
+
+		desde i=0 a Tam(resIndices) hacer			// itera k veces
+		{			
+			si esta entre los valores de y o x		// O(1)
+				agregar imagen al resutado			// O(1)
+			borrar del vector EstanImagenes			// O(1)
+		}		
+}
+\end{verbatimtab}
+\end{framed}
+
+Este algoritmo es simple, consigue los indices de las imagenes que debe agregar segun una de las coordendas ($x$ o $y$) y vesifica luego que cumpla la otra coordenada tambien
+
+Complejidad: $O(2 + log(n) + k + 3k) = O(log(n) + k)$
+
+\end{itemize}

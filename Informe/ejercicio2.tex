@@ -1,166 +1,96 @@
+
 %\section{Ejercicio 2}
 
 %\subsection{insertar en \rbt}
 
 %\subsection{insertar en \adi}
 
+\section{\adi}
 
-\begin{itemize}
-\item \textit{prepararArregloEstanImagenes(int im)}
+\subsection{Ideas para la eleccion de la estructura del \adi}
 
-inicializa un arreglo en false\\
-Costo $O(im)$
+%//////////////////////////////////////////////////////////////////
 
-\item \textit{intervalosElementales(Lista(imagenes) img) $->$ Conj(puntos):res}
+\subsubsection{Dos Árboles}
 
-\begin{framed}
-\begin{verbatimtab}[4]
-intervalosElementales(Lista(imagenes) img) -> Conj(puntos):res
-{
-	desde 0 a Tam(img) hacer	// O(1) / itera im veces
-	{
-		res <- agregar(x_0)		// O(log(2im))
-		res <- agregar(x_1)		// O(log(2im))
-	}
-	return res					// O(1)
-}
-\end{verbatimtab}
-\end{framed}
+La primera idea que se nos acurrio para extender el arbol de intervalos a dos dimensiones, fue simplemente tener dos árboles (uno para cada coordenada).\\
+La busqueda entonces consistia en buscar las imagenes correspondientes a la coordenada $x$ y luego las imagenes correspondientes a la coordenada $y$. Por ultimo, debiamos encontrar las imagenes que aparecieran en los dos conjuntos.
 
-Como ingresamos dos puntos por imagen a lo sumo el conjunto tendra $2im$, por lo que pudimos acotar la insercion $log(2im)$.\\
-El costo total de este algoritmo es pues $O(im*log(im))$
-            
-\item \textit{insertar(IntervaloElemental ie)}
+\vskip0.3cm
 
-\item \textit{llenarIntervalosElementales(Lista(Imagen):imagenes, bool:X)}
-\begin{framed}
-\begin{verbatimtab}[4]          
-llenarIntervalosElementales(Lista(Imagen):imagenes, bool:X)
-{
-	Conj(IntervaloElemental):puntos = intervalosElementales(imagenes, X);	
-										// O(im*log(im))
+%//////////////////////////////////////////////////////////////////
 
-	por cada imagen de "imagenes"		// itera im veces
-		insertar(elemento)				// O(log(n))
-}
-\end{verbatimtab}
-\end{framed}
+\subsubsection{Árbol con ambas coordenadas}
 
-Entonces la complejidad de insertar todos los intervalos elementales es\\
-$O(im*log(im)) + O(im*log(n))$
-            
-\item \textit{insertarImagen(int indiceImagen, inicio, final, min, max, Nodo actual)}
-      
-\item \textit{insertarImagenes(Lista(Imagen):imagenes, bool:X)}
-\begin{framed}
-\begin{verbatimtab}[4]
-insertarImagenes(Lista(Imagen):imagenes, bool:X)
-{
-	depeniendo de si es por X o por Y
-		por cada imagnen de "imagenes"
-			insertarImagen(i, inicio, fin, 0, ANCHO_ARBOL, raiz);
-}
-\end{verbatimtab}
-\end{framed}
+Otra idea fue, hacer un solo arbol en el que los ``Intervalos Elementales'' se construyeran con todos los puntos de inicio y finalizacion de las coordenadas $x$ e $y$. En cada nodo de este arbol se encontrabas un arreglo (o alguna otra estructura) con las imagenes que le correspondian en $x$ y otro arreglo con las imagenes que le correspondian en $y$.\\
+De esta manera, si había coincidencias entre los puntos de $x$ y los puntos de $y$, reduciamos espacialmente la cantidad de nodos.
+La consulta consistía en buscar cada coordenada independietemente de la otra, como en un arbol convencional, tomando como arreglo asociado al nodo el correspondiente a la coordenada deseada en cada caso.
 
-\item \textit{llenarArbol( Lista(Imagen):imagenes, bool:X) $->$ ArbolDeIntervalos}
-\begin{framed}
-\begin{verbatimtab}[4]          
-llenarArbol( Lista(Imagen):imagenes, bool:X) -> ArbolDeIntervalos
-{
-	prepararArregloEstanImagenes(im);
-	llenarIntervalosElementales(imagenes, X);
-	insertarImagenes(imagenes, X);
-}
-\end{verbatimtab}
-\end{framed}
+\vskip0.3cm
+
+%//////////////////////////////////////////////////////////////////
+
+\subsubsection{Árbol de árboles}
+Otra forma de extender el árbol de intervalos a 2 dimensiones era la siguiente:\\
+Tener un árbol de intervalos en una coordenada y en cada nodo tener un árbol de intervalos con la imágenes correspondientes a ese nodo ordenadas por la otra coordenada.
+
+Aquí hay un pequeño ejemplo para facilitar la comprensión:
+
+\begin{center}
+		\includegraphics{ada.png} \\
+\end{center}
+
+%//////////////////////////////////////////////////////////////////
+
+\subsubsection{Árbol único}
+
+La última idea es mucho más simple que todas las anteriores. Se basa en tener un sólo árbol con una de las coordenadas.
+
+Haremos primero la busqueda en este árbol. Luego, de los resultados obtenidos, verificamos (consultando la lista de todas las imagenes) cuales coinciden también el la otra coordenada.
+
+\subsection{Elección de la estructura del \adi}
+
+Nos decidimos por implementar la idea del árbol único, por los siguientes motivos:
+
+Sabíamos que la búsqueda de un punto en un arbol de una sola coordenada era de $O(log(n) + k)$
 
 
+\subsubsection{\da}
+
+En \da la costo espacial y temporal de la construccion era cercano al doble del ``Árbol único'', (pues tiene un árbol más).
+
+\paragraph{}
+En la búsqueda, el \au también resolvia el problema en aproximadamente la mitad del tiempo:\\
+En el \au la busqueda se realiza en $log(n) + k'$ (donde $k'$ son las imagenes que coinciden en x) mas $k'$ para verificas si coincide la coordenada $y$.\\
+En cambio en el \da la busqueda seria $log(n) + k' + log(n) + k''$ (donde $k''$ son las imagenes que coinciden en y) mas $min(k',k'')$ para verificar coincidencias. \\
+NOTA: Para poder hacer estas verificaciones en tiempo lineal, en la estructura del \adi tenemos un arreglo de bool.
 
 
-\end{itemize}	
+\subsubsection{\aac}
 
- 
-            
-\begin{itemize}
-
-\item \textit{buscarIndices(int punto, Nodo actual, conj(int))}
-\begin{framed}
-\begin{verbatimtab}[4]
-buscarIndices(int punto, Nodo actual, conj(int))
-{
-	si no llegue al final del arbol
-		res <- agregar(los indices que aparecen en el nodo)
-		{
-		si  punto es <= actual_numero
-			buscarIndices(punto, Izq(actual), conj(int))
-		si  punto es >= actual_numero
-			buscarIndices(punto, Der(actual), conj(int))		
-		}
-}
-\end{verbatimtab}
-\end{framed}
-
-Este es un algoritmo recursivo, que separa siempre el problema es dos partes iguales.\\
-¿Entra siempre por las dos ramas?... No\\
-Existe a lo sumo solo un nodo en el arbol que tiene el mismo valor que el punto buscado, por lo tanto el algoritmo, hace a lo sumo dos caminos.\\
-Que recorra uno o dos caminos es despreciable, por lo que su complejidad se puede expresar de la siguinte manera.
-\[
-\left\{
-\displaystyle\matrix{
-T(0) = d\hfill\cr
-T(n) = T(n/2) + c + k_i
-} 
-\right.
-\]
-desarrollando una vez 
-\[T(n) = T(n/4) + c + k_i + c + k_j\]
-la formula general es
-\[T(n) = T(n/2^h) + h*c + \displaystyle\sum_{i=1}^h k_i \]
-con $h$ es la altura del arbol\\
-como es un \rbt la altura es cercana a $log(n)$
-\[T(n) = T(n/2^{log(n)}) + log(n)*c + \displaystyle\sum_{i=1}^h k_i\]
-como a cada imagen la incuentro una sola vez por camino (pues si la encontre en un nodo no puedo escontrarla en sus hijos), habré encontrado al final mis $k$ imagenes buscadas.
-\[T(n) = T(n/n) + log(n)*c + k\]
-\[T(n) = T(1) + log(n)*c + k\]
-Esto da un complejidad total de $O(log(n) + k)$.
-
-\item \textit{busqueda(x, y, Lista(Imagen):Imagenes\_levantadas, bool:X) $->$ Lista(Imagen)}
-\begin{framed}
-\begin{verbatimtab}[4]
-busqueda(x, y, Lista(Imagen):Imagenes_levantadas, bool:X) -> Lista(Imagen):res
-{
-	dependiendo si es por X o por Y					// O(1)
-		Lista(int):resIndices;						// O(1)
-		buscarIndices(x, raiz, resIndices);			// O(log(n) + k)
-
-		desde i=0 a Tam(resIndices) hacer			// itera k veces
-		{			
-			si esta entre los valores de y o x		// O(1)
-				agregar imagen al resutado			// O(1)
-			borrar del vector EstanImagenes			// O(1)
-		}		
-}
-\end{verbatimtab}
-\end{framed}
-
-Este algoritmo es simple, consigue los indices de las imagenes que debe agregar segun una de las coordendas ($x$ o $y$) y vesifica luego que cumpla la otra coordenada tambien
-
-Complejidad: $O(2 + log(n) + k + 3k) = O(log(n) + k)$
-
-\end{itemize}
+En \aac el costo espacial y temporal de la construccion, podia disminuir solamente si existia gran cantidad de coincidencias entre los puntos de $x$ y de $y$, pero de todos modos aunque la coincidencia sea absoluta no tendremos menos nodos que en el \au. En caso de que no existan muchas coincidencias la cantidad de los nodos será cercana el doble que en el \au.\\
+NOTA: Ademas cada nodo en el \aac tiene un arreglo más.
+\paragraph{}
+Vimos que en el \au la búsqueda se realiza en $log(n) + k' + k'$, en el \aac, en peor caso, se realizaría en $2log(2n) + k' + k'' + min(k',k'')$, que es trivialmente mayor.
 
 
+\subsubsection{\ada}
 
-%\[
-%T(n) = 
-%\left\{
-%\displaystyle\matrix{
-%d & n=0\cr
-%T(n/2) + c + k_i & n>0
-%} 
-%\right.
-%\]
-%\displaystyle\sum_{k=1}^N k^2 
-% ${x+1 \brace x-1}$
-%$\displaystyle\matrix{\strut\hbox{1}\hfill\cr\strut\hbox{2}\hfill\cr}$
+En cuanto al costo espacial de la construcción, tanto en \au como en \ada, tenemos un árbol de $n$ nodos. La diferencia entre estos 2 árboles es que en \au cada nodo cuenta con un arreglo con índices de imágenes, mientras que en cada nodo del \ada hay un árbol de intervalos con esta información, el cual es más costoso espacialmente que un arreglo.
+En cuanto al costo temporal de la construcción, para hacer el \ada primero necesitamos construir un \au, para recién entonces construir cada subárbol.
+\paragraph{}
+En el \ada el costo temporal de la búsqueda es $log(n)$ (para recorrer el camino correspondiente en la coordenada $x$) más $\sum k_i$ (donde $k_i$ es la cantidad de imágenes que se encuentran en el nodo $i$) más $k$ (que son las imágenes que devuelve el algoritmo).
+
+%\begin{tabular}{|l|l|l|l|l|}
+%\hline
+%	& Costo espacial construcción	& Costo temporal construcción	& Costo espacial búsqueda	& Costo temporal búsqueda\\
+%\hline
+%\au	& 	&	&	& \\
+%\hline
+%\da	&	&	&	& \\
+%\hline
+%\aac	&	&	&	& \\
+%\hline
+%\ada	&	&	&	& 
+%\hline
+%\end{tabular}

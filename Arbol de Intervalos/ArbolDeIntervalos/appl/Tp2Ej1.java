@@ -1,5 +1,7 @@
 package ArbolDeIntervalos.appl;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -85,17 +87,25 @@ public class Tp2Ej1 {
 	{	
 		List<List<Imagen>> instancias = Parser.getListaDeInstancias(archivo_inst);
 		Parser.vaciarArchivo(archivo_salida);
+		boolean porX= true;
 		
 		for(int k=0; k<instancias.size(); k++)
 		{
 			ArbolDeIntervalos arbolX = new ArbolDeIntervalos();
-			arbolX.llenarArbol(instancias.get(k), true);
+			
+    		System.out.println("Comenzando Construccion del arbol de la instancia " + k + " en " + System.currentTimeMillis());
+			arbolX.llenarArbol(instancias.get(k), porX);
+			System.out.println("Termino Construccion del arbol de la instancia " + k + " en " + System.currentTimeMillis());
+			
+			System.out.println("    Comenzando Busquedas en " + System.currentTimeMillis());
 			for(int i=0; i<consultas.size(); i+=2)
 			{
 				List<Imagen> res = arbolX.busqueda(consultas.get(i), consultas.get(i+1), instancias.get(k), true);
 				Parser.guardar(res, archivo_salida);
-				Parser.imprimirSeparador(archivo_salida, true);
+				Parser.imprimirSeparador(archivo_salida, porX);
 			}
+			System.out.println("    Finalizando Busquedas en " + System.currentTimeMillis());
+			
 			Parser.imprimirSeparador(archivo_salida, false);
 		}
 	}
