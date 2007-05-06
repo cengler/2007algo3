@@ -1,7 +1,7 @@
-This is pdfeTeX, Version 3.141592-1.21a-2.2 (MiKTeX 2.4) (preloaded format=latex 2006.11.23)  6 MAY 2007 03:42
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (MiKTeX 2.4) (preloaded format=latex 2006.11.23)  6 MAY 2007 08:25
 entering extended mode
-**F:/FACU/Algoritmos*y*Estructura*de*Datos*III/SVN*2007-05-02/Informe/Informe.tex
-(F:/FACU/Algoritmos y Estructura de Datos III/SVN 2007-05-02/Informe/Informe.tex
+**F:/FACU/Algoritmos*y*Estructura*de*Datos*III/SVN*2007-05-06/Informe/Informe.tex
+(F:/FACU/Algoritmos y Estructura de Datos III/SVN 2007-05-06/Informe/Informe.tex
 LaTeX2e <2003/12/01>
 Babel <v3.8g> and hyphenation patterns for english, dumylang, nohyphenation, german, ngerman, spanish, french, loaded.
 (C:\Archivos de programa\MikTeX\Main\tex\latex\base\article.cls
@@ -165,37 +165,61 @@ loading : Context Support Macros / PDF (2004.03.26)
 \MPscratchDim=\dimen115
 \MPnumerator=\count102
 \everyMPtoPDFconversion=\toks22
-) (ejercicio2.tex
+) (ejercicio1.tex <rotaciones.png, id=1, 313.17pt x 205.0059pt>
+File: rotaciones.png Graphic file (type png)
+ <use rotaciones.png>
+<caso1.png, id=2, 385.44pt x 246.1998pt>
+File: caso1.png Graphic file (type png)
+ <use caso1.png> <caso2.png, id=3, 385.44pt x 246.1998pt>
+File: caso2.png Graphic file (type png)
+ <use caso2.png>
+[1{psfonts.map}
+
+ <rotaciones.png> <caso1.png>] <caso3.png, id=23, 385.44pt x 246.1998pt>
+File: caso3.png Graphic file (type png)
+ <use caso3.png>
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 17.
+(Font)              <7> on input line 50.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 17.
- <ada.png, id=1, 385.44pt x 275.3487pt>
+(Font)              <5> on input line 50.
+ [2 <caso2.png> <caso3.png>] <test_insercion.png, id=27, 385.44pt x 303.534pt>
+File: test_insercion.png Graphic file (type png)
+ <use test_insercion.png> [3 <test_insercion.png>] [4]
+[5]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 235.
+ (C:\Archivos de programa\MikTeX\Main\tex\latex\base\omscmr.fd
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 235.
+ <peorcaso.jpg, id=46, 385.44pt x 295.5843pt>
+File: peorcaso.jpg Graphic file (type jpg)
+
+<use peorcaso.jpg> [6] <peorcaso2.jpg, id=50, 385.44pt x 295.5843pt>
+File: peorcaso2.jpg Graphic file (type jpg)
+ <use peorcaso2.jpg> [7 <peorcaso.jpg> <peorcaso2.jpg>] [8]) [9] (ejercicio2.tex <ada.png, id=70, 385.44pt x 275.3487pt>
 File: ada.png Graphic file (type png)
- <use ada.png> [1{psfonts.map}
-
- <ada.png>])
-AED: lastpage setting LastPage [2] (Informe.aux)
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
- ) 
+ <use ada.png> [10 <ada.png>])
+AED: lastpage setting LastPage [11] (Informe.aux) ) 
 Here is how much of TeX's memory you used:
- 1902 strings out of 95499
- 22091 string characters out of 1188477
- 79897 words of memory out of 1080078
- 4940 multiletter control sequences out of 60000
- 6581 words of font info for 23 fonts, out of 1000000 for 2000
+ 1976 strings out of 95499
+ 23059 string characters out of 1188477
+ 85017 words of memory out of 1080078
+ 4986 multiletter control sequences out of 60000
+ 7050 words of font info for 25 fonts, out of 1000000 for 2000
  14 hyphenation exceptions out of 4999
- 32i,13n,43p,481b,219s stack positions out of 5000i,500n,10000p,200000b,32768s
+ 32i,13n,43p,501b,347s stack positions out of 5000i,500n,10000p,200000b,32768s
 PDF statistics:
- 35 PDF objects out of 300000
+ 82 PDF objects out of 300000
  0 named destinations out of 300000
- 6 words of extra memory for PDF output out of 65536
-<C:\Archivos de programa\MikTeX\Main\fonts\type1\bluesky\cm\cmmi7.pfb><C:\Archivos de programa\MikTeX\Main\fonts\type1
-\bluesky\cm\cmex10.pfb><C:\Archivos de programa\MikTeX\Main\fonts\type1\bluesky\cm\cmti10.pfb><C:\Archivos de programa\M
-ikTeX\Main\fonts\type1\bluesky\cm\cmsy7.pfb><C:\Archivos de programa\MikTeX\Main\fonts\type1\bluesky\cm\cmmi10.pfb><C:\A
-rchivos de programa\MikTeX\Main\fonts\type1\bluesky\cm\cmbx10.pfb><C:\Archivos de programa\MikTeX\Main\fonts\type1\blues
-ky\cm\cmbxti10.pfb><C:\Archivos de programa\MikTeX\Main\fonts\type1\bluesky\cm\cmbx12.pfb><C:\Archivos de programa\MikTe
-X\Main\fonts\type1\bluesky\cm\cmr10.pfb>
-Output written on Informe.pdf (2 pages, 153781 bytes).
+ 41 words of extra memory for PDF output out of 65536
+<C:\Archivos de programa\MikTeX\Main\fonts\type1\bluesky\cm\cmsy7.pfb
+><C:\Archivos de programa\MikTeX\Main\fonts\type1\bluesky\cm\cmbx10.pfb><C:\Archivos de programa\MikTeX\Main\fonts\type1
+\bluesky\cm\cmr7.pfb><C:\Archivos de programa\MikTeX\Main\fonts\type1\bluesky\cm\cmmi7.pfb><C:\Archivos de programa\MikT
+eX\Main\fonts\type1\bluesky\cm\cmex10.pfb><C:\Archivos de programa\MikTeX\Main\fonts\type1\bluesky\cm\cmsy10.pfb><C:\Arc
+hivos de programa\MikTeX\Main\fonts\type1\bluesky\cm\cmtt10.pfb><C:\Archivos de programa\MikTeX\Main\fonts\type1\bluesky
+\cm\cmmi10.pfb><C:\Archivos de programa\MikTeX\Main\fonts\type1\bluesky\cm\cmti10.pfb><C:\Archivos de programa\MikTeX\Ma
+in\fonts\type1\bluesky\cm\cmcsc10.pfb><C:\Archivos de programa\MikTeX\Main\fonts\type1\bluesky\cm\cmbxti10.pfb><C:\Archi
+vos de programa\MikTeX\Main\fonts\type1\bluesky\cm\cmbx12.pfb><C:\Archivos de programa\MikTeX\Main\fonts\type1\bluesky\c
+m\cmr10.pfb>
+Output written on Informe.pdf (11 pages, 1041457 bytes).
